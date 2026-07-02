@@ -57,7 +57,7 @@ class Market:
         
         return dBt, Bt
     
-    def GBM_St(self):
+    def GBM_St(self,step):
         '''
         Y = lnX
         St = X = e^Y
@@ -76,7 +76,7 @@ class Market:
         Y[0] = np.log(self.S0)
         Y[1:] = np.log(self.S0) + np.cumsum(drift_Y+diffn_Y) # additive BM observed from dY that relies on initial dt and dBt
         
-        return np.exp(Y)
+        return np.exp(Y)[step]
     
     def GBM_St_terminal(self):
         
@@ -85,10 +85,9 @@ class Market:
                              + self.sigma * np.sqrt(self.T) * Z)
         return St
 
-market = Market(S0 = 100, r = 0, sigma = 1, T = 1, N = 252, seed = 12)
-print(market.GBM_St()[-1])
+
         
-class Optins:
+class Options:
     '''
     Goal
     Simulate current price of the option
@@ -100,7 +99,7 @@ class Optins:
     Ct = e^(-rt) (FN(d1)-KN(d2))
     '''
     
-    def __init__(self, K, T, r, sigma, seed):
+    def __init__(self, K, T, r, sigma, seed=None):
         
         self.K = K
         self.T = T
@@ -108,9 +107,9 @@ class Optins:
         self.sigma = sigma
         self.rng = np.random.default_rng(seed)
     
-    def d1(self, t=None):
+    def d1(self, St, t):
         
-        nom = np.log(self.S0/self.K) + self.sigma**2/2*(self.T-t)
+        nom = np.log(St/self.K) + (self.r+self.sigma**2/2)*(self.T-t)
     
         dem = self.sigma*(self.T-t)**0.5
         
@@ -118,7 +117,7 @@ class Optins:
         
     def eu_call_BS(self, St, t):
         
-        d1 = self.d1()
+        d1 = self.d1(St,t)
         d2 = d1 - self.sigma*(self.T-t)**0.5
         
         Nd1 = norm.cdf(d1)
@@ -128,15 +127,51 @@ class Optins:
         
         return C
     
-    def Delta(self):
+    def Delta(self, t):
         
-        d1 = self.d1()
+        d1 = self.d1(St, t)
         
         return norm.cdf(d1)
+    
+    
+class Hedger:
+    
+    def __init__(self, market, option, N_steps):
         
+        self.market = market
+        self.option = option
+        self.N = market.N
+        self.dt = market.T/market.N
+        self.stock = 0.0
+        self.cash = 0.0
+        self.short_call = True #option sell perspective
         
-        
-        
+        #set up at t = 0
+        S0 = market.GBM_St(0)
+        self.cash = option.eu_call_BS(S0, 0)
+        target_delta = option.Delta(0)
+        self.cash -= S0 * target_delta
+        self.stock = target_delta
+        print(f'PRINT{self.cash}, {target_delta}')
+
+    def rebalance():
+        pass
+    
+S0 = 100
+K = 90
+r = 0
+sigma = 1
+T = 1
+N = 252
+
+market = Market(S0 = S0, r = r, sigma = sigma, T = T, N = N)
+#t = np.linspace(0, T, N)
+St = market.GBM_St(0)
+options = Options(K=K, T=T, r=r, sigma=sigma)
+options.eu_call_BS(100, t=0.0)
+options.Delta(t=0)
+
+hedger = Hedger(market, options, N)
         
         
         
