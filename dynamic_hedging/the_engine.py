@@ -245,20 +245,13 @@ class Hedger:
         #St-(St-K) = K, final P&L after cash settlement
 
         return self.cash
-    
-    
-S0 = 100; K = 90; r = 0; sigma = 1; T = 1; N = 252
 
-pnl_list = []
+if __name__ == "__main__":
+    
+    S0 = 100; K = 90; r = 0; sigma = 1; T = 1; N = 252
 
-for _ in range(1000):
+
     market = Market(S0 = S0, r = r, sigma = sigma, T = T, N = N)
     options = Options(K=K, T=T, r=r, sigma=sigma)
     hedger = Hedger(market, options)
-    hedger.rebalance()
-    pnl = hedger.final_trade()
-
-    pnl_list.append(pnl)
-    
-print(f'Mean P&L is {np.mean(pnl_list)}')
-print(f'Standard deviation P&L is {np.std(pnl_list)}')
+    print(f'St is {market.GBM_St(N):.3f}')
