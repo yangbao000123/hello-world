@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jun 29 19:06:27 2026
+Created on Mon Jun 29 19:06:27 2026 --- Jul 05
 
 @author: tianyang
 
@@ -21,8 +21,10 @@ Next Iteration
 A. separation of St simulation and rebalance frequency
 B. real‑world frictions
     a. transaction cost
-    b. number of shares to the nearest integer
+    b. set up threshold to rebalance the stock position
+        b.1. determine reasonable threshold to be skipped
 C. barrier option pricer
+D. vectorize hedger with bulk-St simulation
 """
 
 import numpy as np
@@ -51,6 +53,7 @@ class Market:
         self.rng = np.random.default_rng(seed)                 #mean, sigma, size
         self.St_path = None
 
+
     def BM_Bt(self):
         '''
         Underlying dBt term in Brownian Motion, Bt = sum_{i=0}^{n} Xi
@@ -64,6 +67,7 @@ class Market:
         Bt[1:] = np.cumsum(dBt)
         
         return dBt, Bt
+    
     
     def St_simulate(self):
         '''
@@ -85,7 +89,8 @@ class Market:
         Y[1:] = np.log(self.S0) + np.cumsum(drift_Y+diffn_Y)   #additive BM observed from dY that relies on initial dt and dBt
         
         self.St_path = np.exp(Y)
-            
+       
+        
     def GBM_St(self, step):
         
         if self.St_path is None:
@@ -94,13 +99,15 @@ class Market:
             
         else:
             return self.St_path[step]
-            
+       
+        
     def GBM_St_terminal(self):
         
         Z = self.rng.normal(0, 1)
         St = self.S0 * np.exp((self.mu - 0.5 * self.sigma**2) * self.T
                              + self.sigma * np.sqrt(self.T) * Z)
         return St
+
 
 class Options:
     '''
@@ -122,6 +129,7 @@ class Options:
         self.sigma = sigma
         self.rng = np.random.default_rng(seed)
     
+    
     def d1(self, St, t):
         
         nom = np.log(St/self.K) + (self.r+self.sigma**2/2)*(self.T-t)
@@ -130,6 +138,7 @@ class Options:
         
         return nom/dem
         
+    
     def eu_call_BS(self, St, t):
         
         d1 = self.d1(St,t)
@@ -142,6 +151,7 @@ class Options:
         C = St * Nd1 - self.K * np.exp(-self.r * (self.T - t)) * Nd2
         
         return C
+    
     
     def Delta(self, St, t):
         
@@ -159,7 +169,8 @@ class Hedger:
         Collect interest on cash or log interest on loan
         Compute P&L when t reaches T
     '''
-    def __init__(self, market, options, trz_cost):
+    def __init__(self, market, options, transaction_cost, threshold):
+        
         self.market = market                                   #stock price at timestamps
         self.options = options                                 #option price and delta for hedging purpose
         self.T = market.T
@@ -168,17 +179,18 @@ class Hedger:
         self.stock_shares = 0.0                                #number of shares to hedge
         self.short_call = True                                 #short call and long security
         #self.N_steps = N_steps                                #duplicated from options N
-        self.trz_cost = trz_cost
+        self.transaction_cost = transaction_cost
+        self.threshold = threshold
         
         #initiate T=0 as beginning state
         S0 = self.market.GBM_St(0)        
         target_delta = self.options.Delta(S0,0)
         self.cash = self.options.eu_call_BS(S0, 0)             #short call
-        self.cash -= S0*target_delta*(1+self.trz_cost)         #long stock
+        self.cash -= S0*target_delta*(1+self.transaction_cost)         #long stock
         self.stock_shares = target_delta
 
+
     def rebalance_step(self, step):
-        
         
         self.cash *= np.exp(self.options.r*self.dt)
         
@@ -186,18 +198,21 @@ class Hedger:
         target_delta = self.options.Delta(St, self.dt*step)
         hedged_delta= target_delta - self.stock_shares
         
+        if abs(hedged_delta) < self.threshold: return
+        
         if hedged_delta > 0:
-            self.cash -= hedged_delta * St * (1+self.trz_cost) #purchase to adjust delta
+            self.cash -= hedged_delta * St * (1+self.transaction_cost) #purchase to adjust delta
             
         elif hedged_delta < 0:
-            self.cash -= hedged_delta * St * (1-self.trz_cost) #sell to adjust delta
+            self.cash -= hedged_delta * St * (1-self.transaction_cost) #sell to adjust delta
             
         self.stock_shares = target_delta
-        
+    
     
     def rebalance(self):
         for step in range(1, self.market.N):
             self.rebalance_step(step)
+        
         
     def rebalance_loop(self):  
         
@@ -217,9 +232,9 @@ class Hedger:
             
             hedged_delta = target_delta - self.stock_shares
             if hedged_delta > 0:
-                self.cash -= hedged_delta * St * (1+self.trz_cost)
+                self.cash -= hedged_delta * St * (1+self.transaction_cost)
             elif hedged_delta < 0:
-                self.cash -= hedged_delta * St * (1-self.trz_cost)
+                self.cash -= hedged_delta * St * (1-self.transaction_cost)
             
             self.stock_shares = target_delta
 
@@ -243,7 +258,7 @@ class Hedger:
         
         self.cash *= np.exp(self.options.r*self.dt)            #accrue interest at T
         self.cash += St*self.stock_shares                      #close longing stock positions by selling at St
-        self.cash -= St*self.stock_shares*self.trz_cost
+        self.cash -= St*self.stock_shares*self.transaction_cost
         #selling security and receive St
 
         if self.short_call == True:
@@ -257,12 +272,14 @@ class Hedger:
 
         return self.cash
 
+
 if __name__ == "__main__":
     
-    S0 = 100; K = 90; r = 0; sigma = 1; T = 1; N = 252; transaction_cost = 0.001
+    S0 = 100; K = 90; r = 0; sigma = 1; T = 1; N = 252; 
+    transaction_cost = 0.001; threshold = 0.01
 
 
     market = Market(S0 = S0, r = r, sigma = sigma, T = T, N = N)
     options = Options(K=K, T=T, r=r, sigma=sigma)
-    hedger = Hedger(market, options, trz_cost=transaction_cost)
+    hedger = Hedger(market, options, transaction_cost=transaction_cost, threshold=threshold)
     print(f'St is {market.GBM_St(N):.3f}')
