@@ -30,11 +30,11 @@ Stock price follows geometric Brownian Motion $dS_t = r S_t dt + \sigma S_t dB_t
 
 a. with zero-transaction cost and daily rebalancing frequency, distribution of simulated PnL follows bell-curve shape; its mean centers around 0 while standard deviation is around 2.
 <div align="center">
-<img src="assets/PnL_Distribution.png" alt="PnL Distribution_noTC, 1000 simulations" width="300" />
+<img src="assets/PnL_Distribution_noTC.png" alt="PnL Distribution without transaction cost, 1000 simulations" width="300" />
 </div>
 b. With transaction cost applied at initial state, rebalancing and final state, simulated PnL mean becomes negative (e.g., –1.52 for 0.1% cost) while the standard deviation remains similar.
 <div align="center">
-<img src="assets/PnL_Distribution.png" alt="PnL Distribution_TC, 1000 simulations" width="300" />
+<img src="assets/PnL_Distribution_TC.png" alt="PnL Distribution_TC, transaction cost = 0.1%" width="300" />
 </div>
 c. For a delta adjustment smaller than the threshold, the hedging trade is not executed
 In experiment, the threholds looked at are [0, 0.005, 0.01, 0.02, 0.05]; from this rough estimation, the higher the threshold, the smaller magnitude of negative PnL yet the more volatile the PnL simulations appear to be.
