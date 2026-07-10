@@ -37,12 +37,13 @@ Implement the likelihood-ratio weighting to price a call under Q
 
 import numpy as np
 
-
 S0 = 100; K = 90; mu = 0.1; r = 0; 
 T = 1; sigma = 1.0; n_paths = 1000
 
-
 #Stock price with mu = 0.1
+#Stock price with random sigma
+#St~(mu, sigma)
+#Underlying Bt follows N~(0, deltat)
 Z = np.random.default_rng().normal(0, 1, n_paths)               # Monte Carlo
 Bt = Z * T**0.5                                                 # N~(0,deltat)
 St = S0 * np.exp((mu - 0.5 * sigma**2) * T + sigma * Bt)              
