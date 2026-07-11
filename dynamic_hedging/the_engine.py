@@ -61,7 +61,8 @@ class Market:
         dWt^2 = dt per Quadratic Variation
         sigma=(T/N)^0.5 scaling factor for Var(Bt)=T and per Qudratic Variation
         '''
-        
+        #dBt intermediate, therefore Bt variance is (deltat**0.5)
+        #if dBt terminal, Bt variance is T
         dBt = self.rng.normal(0, (self.T/self.N)**0.5, self.N) #CORRECTION mean=0
         Bt = np.zeros(self.N+1)
         Bt[1:] = np.cumsum(dBt)
@@ -273,12 +274,13 @@ class Hedger:
 
 
 if __name__ == "__main__":
-    
-    S0 = 100; K = 90; r = 0; sigma = 1; T = 1; N = 252; 
-    transaction_cost = 0.001; threshold = 0.01
-
+        
+    S0 = 100; K = 90; mu = 0.1; r = 0; 
+    T = 1; N = 252; sigma = 1;
 
     market = Market(S0 = S0, r = r, sigma = sigma, T = T, N = N)
     options = Options(K=K, T=T, r=r, sigma=sigma)
-    hedger = Hedger(market, options, transaction_cost=transaction_cost, threshold=threshold)
-    print(f'St is {market.GBM_St(N):.3f}')
+
+    St = market.GBM_St_terminal()
+    print(options.eu_call_BS(100, 0))
+    #print(f'St is {market.GBM_St(N):.3f}')

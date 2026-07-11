@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
+''' July 11
+clear concepts in Girsanov theorem: Partition of q -> Mt; sigma choice in BS and theta 
+clean up BM quadratic variation - +6pm
+
+'''
+
+
 """
 Modified on Thu Jul 9
 
@@ -37,20 +45,20 @@ Implement the likelihood-ratio weighting to price a call under Q
 
 import numpy as np
 
-S0 = 100; K = 90; mu = 0.1; r = 0; 
-T = 1; sigma = 1.0; n_paths = 1000
+S0 = 100; K = 90; mu = 0.1; r = 0;  sigmaSt = 1.0; #sigma not to be deltaT; consider which entity this sigma has influence on
+T = 1; sigmaBt = T**0.5; n_paths = 1000
 
 #Stock price with mu = 0.1
-#Stock price with random sigma
-#St~(mu, sigma)
-#Underlying Bt follows N~(0, deltat)
-Z = np.random.default_rng().normal(0, 1, n_paths)               # Monte Carlo
+#Stock price with free-constant sigmaSt
+#St~(mu, sigmaSt)
+#Underlying Bt follows N~(0, T) since Bt-terminal to calcualte St-terminal
+Z = np.random.default_rng().normal(0, sigmaBt, n_paths)         # Monte Carlo
 Bt = Z * T**0.5                                                 # N~(0,deltat)
-St = S0 * np.exp((mu - 0.5 * sigma**2) * T + sigma * Bt)              
+St = S0 * np.exp((mu - 0.5 * sigmaSt**2) * T + sigmaSt * Bt)              
 
 #Compute Mt = exp(theta*Bt- 0.5*theta*deltaT) where theta = (r-mu)/sigma = -(mu-r)/sigma
 #Mt, likelihood ratio, dQ/dP""
-theta = (r - mu)/sigma
+theta = (r - mu)/sigmaSt
 Mt = np.exp(theta*Bt - 0.5*theta**2*T)
 
 #Weight the discounted payoff by Mt and average
@@ -58,7 +66,13 @@ payoff = np.maximum(St-K,0)
 price = np.exp(-r*T) * np.mean(payoff * Mt)
 print(price)
 
-
+#NOTES
+#Incorrect-small price is calculated because
+#a. sigmaSt and sigmaBt was not distinguished and both mistake (T/N)**0.5
+#b. mistaking 1.sigmaBt to be intermediate-dBt variance (T/N)**0.5 is flawed 
+#               because 1. intermediate-dBt to simulate full path is implemented with deltat**0.5
+#                          while terminal-dBt variance is T
+#             2.sigmaSt is a free constant representing annualised stock volatility
 #%%
 
 
@@ -74,7 +88,8 @@ to reach Bt_tilde by introducing likelihood of probabilities under P to it of un
 multiplication of detla Bt_tilde at all timestamps is a martingale under P, 
 where dMt = AtMtdBt.
 
-To find the likelihood shifting factor, P(delta Bt for up) = P(delta Bt for down) = P((deltat)**0.5) = 1/2 under P
+To find the likelihood shifting factor, 
+P(delta Bt for up) = P(delta Bt for down) = P((deltat)**0.5) = 1/2 under P
 supposing q is the probability for delta Bt_tilde upward, 1-q is it for delta Bt_tilde downward
 q*deltat**0.5 + (1-q)*(-deltat**0.5) = A(t)deltat
 q=0.5*(1+A(t)*deltat**0.5)
