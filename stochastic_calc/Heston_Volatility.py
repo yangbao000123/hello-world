@@ -28,7 +28,7 @@ import numpy as np
 
 
 T = 1; N = 252
-mu_dWtS = 0; sigma_dWts = (T/N)**0.5 ; #sigma_dWts to be free constant, instead of (deltat)**0.5?
+mu_dWtS = 0; sigma_dWts = (T/N)**0.5 ; # sigma_dWt (deltat)**0.5
 
 rho = -0.7
 rng = np.random.default_rng()
@@ -37,29 +37,44 @@ S0=100; v0 = .3
 
 kappa = 0.1; theta = 0.12; sigmav = 0.5; r = 0.1
 
-Z1 = rng.normal(mu_dWtS, sigma_dWts, N)
-Z2 = rng.normal(mu_dWtS, sigma_dWts, N)
+
 
 #vt+i = vti + kappa(theta - vti)*deltat + sigmav (vti)**0.5 *dWtv; max(vt,0)
 #St+i = Sti + rSti*deltat + vti**0.5 Sti dWtS
 dt = T/N
+
+
+St = np.zeros(N+1); Vt = np.zeros(N+1)
+St[0] = S0; Vt[0] = v0
+for i in range(N):
+    Z1 = rng.normal(mu_dWtS, sigma_dWts, )
+    Z2 = rng.normal(mu_dWtS, sigma_dWts, )
+    dWtS = (dt)**0.5*Z1
+    dWtv = (dt)**0.5*(rho*Z1+(1-rho**2)**0.5*Z2)
+    Vt[i+1] = max(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv,0)
+    St[i+1] = St[i] + r * St[i] * dt + Vt[i]**0.5 * St[i] * dWtS
+    
+print(St[-1])
+
+
+
+#vt+i = vti + kappa(theta - vti)*deltat + sigmav (vti)**0.5 *dWtv; max(vt,0)
+#St+i = Sti + rSti*deltat + vti**0.5 Sti dWtS
+
+Z1 = np.random.normal(mu_dWtS, sigma_dWts, N)
+Z2 = np.random.normal(mu_dWtS, sigma_dWts, N)
+
 dWtS = (dt)**0.5*Z1
 dWtv = (dt)**0.5*(rho*Z1+(1-rho**2)**0.5*Z2)
 
 St = np.zeros(N+1); Vt = np.zeros(N+1)
 St[0] = S0; Vt[0] = v0
+
 for i in range(N):
-    dWtSi = (dt)**0.5*Z1
     Vt[i+1] = max(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv[i],0)
     St[i+1] = St[i] + r * St[i] * dt + Vt[i]**0.5 * St[i] * dWtS[i]
 
-    
-
-
-
-
-
-
+print(St[-1])
 
 
 
