@@ -19,13 +19,9 @@ sigmav: volatility of variance process
 dWt^S and dWt^v brownian simulation   --- does dWt always represent brownian motion, standard?
 kappa, theta sigmav are derived from vt; how to define vt?
 rho: links St-shock and vt-shock, since shock then delta values, dWt^S and dWt^v; why not dSt, dvt
-     cholesky factor to produce correlated series
-    
------------------
-modify choleski exercise to OOP and import it here
+     cholesky factor to produce correlated series  
 """
 import numpy as np
-
 
 T = 1; N = 252
 mu_dWtS = 0; sigma_dWts = (T/N)**0.5 ; # sigma_dWt (deltat)**0.5
@@ -37,12 +33,9 @@ S0=100; v0 = .3
 
 kappa = 0.1; theta = 0.12; sigmav = 0.5; r = 0.1
 
-
-
 #vt+i = vti + kappa(theta - vti)*deltat + sigmav (vti)**0.5 *dWtv; max(vt,0)
 #St+i = Sti + rSti*deltat + vti**0.5 Sti dWtS
 dt = T/N
-
 
 St = np.zeros(N+1); Vt = np.zeros(N+1)
 St[0] = S0; Vt[0] = v0
@@ -71,7 +64,9 @@ St = np.zeros(N+1); Vt = np.zeros(N+1)
 St[0] = S0; Vt[0] = v0
 
 for i in range(N):
-    Vt[i+1] = max(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv[i],0)
+    
+    #volatility has floor 0, as being standard deviation**2
+    Vt[i+1] = max(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv[i], 0)
     St[i+1] = St[i] + r * St[i] * dt + Vt[i]**0.5 * St[i] * dWtS[i]
 
 print(St[-1])
@@ -88,68 +83,28 @@ print(St[-1])
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#NOTES and First Attempt
 import sys
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-#from black_scholes.bs_greek import BlackScholes
-#from probability_stats import choleski_random_walk
-#from BM_QuadraticVariation import BrownianMotion
-#bm = BrownianMotion(mu_dWtS, sigma_dWts, T=T, N=N)
-#dWtS, _ = bm.simulation()
-
-
-
 corr = 0.9
-vdWtS = sigma_dWts**2
-vdWtv = 0.6 
+vdWtS = sigma_dWts**2       #INCORRECT, dWt standard deviation == deltat**0.5
+vdWtv = 0.6                 #INCORRECT, dWt standard deviation == deltat**0.5
 #covrn = vdWtS*vdWtv*corr
-covMx = [[vdWtS**2, vdWtS*vdWtv*corr],[vdWtS*vdWtv*corr, vdWtv**2]]
+covMx = [[vdWtS**2, vdWtS*vdWtv*corr],[vdWtS*vdWtv*corr, vdWtv**2]]    #INCORRECT, design correlation matrix with rho
 L_chk = np.linalg.cholesky(covMx)
 
-dWtS = np.random.normal(loc=mu_dWtS, scale=sigma_dWts, size=(len(covMx),N)) #(2,252) why is it 2?
+#random shocks to dWtS and dWtv are not introduced and dWtS dimension is off
+dWtS = np.random.normal(loc=mu_dWtS, scale=sigma_dWts, size=(len(covMx),N)) 
 dWtv = L_chk@dWtS
 S0 = 100; mu_St = 0; sigma_St = 1.0; 
+#terminal St is not appropraite; 
+#intermediate St is needed to incorporate Heston SDE, with volatility at each step
+
+#vt+i = vti + kappa(theta - vti)*deltat + sigmav (vti)**0.5 *dWtv; max(vt,0)
+#St+i = Sti + rSti*deltat + vti**0.5 Sti dWtS
 
 St= 100 * np.exp(mu_St - 0.5 * sigma_St**2) * T + sigma_St*(T**0.5)*dWtS[0]
 
