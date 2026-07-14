@@ -6,6 +6,9 @@ Created on Mon Jul 13 19:18:37 2026
 @author: tianyang
 
 Heston Model, stochastic volatility
+a. St and vt, 13 July
+b. Monte-Carlo multi-path European call pricer, 14 July
+c. Implied volatility and plots
 
 dSt = mu*St*dt + vt**0.5*St*dWt^S
 dvt = k(theta-vt)dt + sigmav*vt**0.5*dWt^v
