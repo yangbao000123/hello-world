@@ -46,24 +46,44 @@ dt = T/N
 
 St = np.zeros(N+1); Vt = np.zeros(N+1)
 St[0] = S0; Vt[0] = v0
+
+St = np.zeros(N+1); 
+Vt = np.zeros(N+1)
+St[0] = S0; Vt[0] = v0
+
+for i in range(N):
+    Z1 = rng.normal(0, 1)       #N~(0,1)
+    Z2 = rng.normal(0, 1)       #CORRECTION from N~(0, deltat**0.5); 
+                                #error causes dWt~N(0, dt**2) with significantly smaller stdev
+    dWtS = (dt)**0.5*Z1         #N~(0,deltat**0.5)
+    dWtv = (dt)**0.5*(rho*Z1+(1-rho**2)**0.5*Z2)
+    Vt[i+1] = np.maximum(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv,0)
+    St[i+1] = St[i] + r * St[i] * dt + Vt[i]**0.5 * St[i] * dWtS
+print(St[-1])
+print(f"Risk-neutral expectation for St is {S0 * np.exp(r*T):.3f}")
+
+
+#%% Heston SDE simulation
+
 n_p = 10000
 ST = np.zeros(n_p)
-for each in range(n_p):             #verify Heston SDE simulation
-    
+for each in range(n_p):             
+       
     St = np.zeros(N+1); 
     Vt = np.zeros(N+1)
     St[0] = S0; Vt[0] = v0
     
     for i in range(N):
         Z1 = rng.normal(0, 1)       #N~(0,1)
-        Z2 = rng.normal(0, 1)
+        Z2 = rng.normal(0, 1)       #CORRECTION from N~(0, deltat**0.5); 
+                                    #error causes dWt~N(0, dt**2) with significantly smaller stdev
         dWtS = (dt)**0.5*Z1         #N~(0,deltat**0.5)
         dWtv = (dt)**0.5*(rho*Z1+(1-rho**2)**0.5*Z2)
         Vt[i+1] = np.maximum(Vt[i] + kappa * (theta - Vt[i]) * dt + sigmav * Vt[i]**0.5 * dWtv,0)
         St[i+1] = St[i] + r * St[i] * dt + Vt[i]**0.5 * St[i] * dWtS
     ST[each] = St[-1]
 print("Mean S_T:", np.mean(ST)) 
-
+print(f"Risk-neutral expectation for St is {S0 * np.exp(r*T):.3f}")
 
 #%%
 #vt+i = vti + kappa(theta - vti)*deltat + sigmav (vti)**0.5 *dWtv; max(vt,0)
