@@ -48,6 +48,37 @@ class Heston_Volatility:
         self.dt = self.T/self.N
         self.rng = np.random.default_rng()
     
+    def St_heston_simu(self, n_paths):
+        '''
+        Vectorise large-number path simulations for St
+        Maintain time-wise loop for St and Vt
+        '''
+        
+        S = np.full(n_paths, self.S0, dtype=float)
+        v = np.full(n_paths, self.v0, dtype=float)
+        
+        Z1 = self.rng.normal(0, 1, size = (n_paths, self.N))
+        Z2 = self.rng.normal(0, 1, size = (n_paths, self.N))
+    
+        dWtS = self.dt**0.5*Z1                                          #array of N~(0,1)
+        dWtv = self.dt**0.5 * (self.rho*Z1+(1-self.rho**2)**0.5*Z2)     #delta volatility, correlated with delta S
+        
+        for t in range(self.N):
+            
+            v_left = v                                                  #v at one-previous step, update once St is calculated
+            v = np.maximum(v + self.kappa*(self.theta - v)*self.dt + self.sigma_v*np.maximum(v,0)**0.5*dWtv[:, t], 0)
+            
+            S = S + self.r*S*self.dt + v_left**0.5*S*dWtS[:,t]          #simualte S using v_t-1 to maintain correlation
+            
+        return S #n_paths simulation, each with N (time)steps
+    
+    def European_Call_MC_simu(self, K, n_paths):
+        
+        S_n_paths = self.St_heston_simu(n_paths)
+        payoff_np = np.maximum(S_n_paths - K, 0)
+        Call_MC = np.exp(-self.r*self.T)*np.mean(payoff_np)
+        
+        return Call_MC
     
     def St_heston(self):
         
@@ -60,12 +91,12 @@ class Heston_Volatility:
                                                     #error causes dWt~N(0, dt**2) with significantly smaller stdev
             dWtS = (self.dt)**0.5*Z1                #N~(0,deltat**0.5)
             dWtv = (self.dt)**0.5*(self.rho*Z1+(1-self.rho**2)**0.5*Z2)
-            Vt[i+1] = np.maximum(Vt[i] + self.kappa * (self.theta - Vt[i]) * self.dt + self.sigma_v * Vt[i]**0.5 * dWtv,0)
+            Vt[i+1] = np.maximum(Vt[i] + self.kappa * (self.theta - Vt[i]) * self.dt + self.sigma_v * np.maximum(Vt[i]**0.5,0) * dWtv,0)
             St[i+1] = St[i] + self.r * St[i] * self.dt + Vt[i]**0.5 * St[i] * dWtS
         
         return St
     
-    def European_Call_MC(self, n_paths, K):
+    def European_Call_MC(self, K, n_paths):
         
         St_MC = np.zeros(n_paths)
         payoff = np.zeros(n_paths)
@@ -76,8 +107,8 @@ class Heston_Volatility:
             
             St_MC[n] = St
             payoff[n] = call_payoff
-        
-            #print(St, call_payoff)
+
+            #rint(St, call_payoff)
         call_MC = np.exp(-self.r*self.T) * np.mean(payoff)
         
         return call_MC
@@ -88,21 +119,14 @@ sigmav = 0.5; v0 = .3; r = 0.1; S0=100
 heston = Heston_Volatility(T=T, N=N, rho=rho, kappa=kappa, theta=theta, 
                            sigma_v = sigmav, v0 = v0, r = r, S0 = S0)
 St_single = heston.St_heston()
-european_C = heston.European_Call_MC(1000, 90)
-heston.European_Call_MC(1000, 90)
-
-print(St_single[-1])
+european_C = heston.European_Call_MC(90, 1000)
+eu_MC = heston.European_Call_MC_simu(90, 10000)
+print(np.mean(heston.St_heston_simu(1000)))
 print(european_C)
-print(f"Risk-neutral expectation for St is {S0 * np.exp(r*T):.3f}")
+print(eu_MC)
+#print(f"Risk-neutral expectation for St is {S0 * np.exp(r*T):.3f}")
 
-'''
-monte carlo
-for sim in range(n_sims):
-    Z1 = np.random.normal(0, 1, N)
-    Z2 = np.random.normal(0, 1, N)
-    # ... compute dWtS, dWtv for this path
-    # ... Euler loop to produce S_T
-    ST[sim] = S[-1]'''
+
 #%% Heston SDE simulation
 #Monte Carlo European Call Pricer
 
