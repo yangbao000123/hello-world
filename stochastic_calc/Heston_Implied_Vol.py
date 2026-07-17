@@ -86,6 +86,7 @@ class Heston_Volatility:
     
     def St_heston(self):
         
+        N = self.N
         St = np.zeros(N+1); St[0] = self.S0
         Vt = np.zeros(N+1); Vt[0] = self.v0
         
@@ -136,7 +137,8 @@ class Heston_Volatility:
         call_MC = np.exp(-self.r*self.T) * np.mean(payoff)
         
         return call_MC
-    
+
+
 T = 1; N = 252; rho = -0.7; kappa = 0.02; theta = 0.12
 sigmav = 0.5; v0 = .3; r = 0.1; S0=100; K=90
 
