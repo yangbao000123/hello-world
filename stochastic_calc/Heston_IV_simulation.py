@@ -78,6 +78,7 @@ for K in [70, 100, 130]:
     bp = Options(K=K, sigma = v0**0.5, r = r, T = T).eu_call_BS(S0, T-T)
     print(f"Strike at {K}, heston-call price {hp}, BS-call price {bp}")
 
+#test on github username
 
 
 
