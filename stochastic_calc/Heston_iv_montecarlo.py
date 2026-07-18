@@ -5,10 +5,22 @@ Created on Mon Jul 13 19:18:37 2026
 
 @author: tianyang
 
-Heston Model, stochastic volatility
-a. St and vt, 13 July
-b. Monte-Carlo multi-path European call pricer, 14 July
-c. Implied volatility smile by inverting B-S for different strikes
+Goals
+Implement security price with dynamic St-volatility, under Q-probability measurement
+    stock return follows risk-free interest rate 
+    St-diffusion and Vt-diffusion are correlated by rho
+    initiate St with S0 and v0
+Measure European Call price as discounted mean of payoff via Monte-Carlo simulation
+Calculate Implied Volatility using Black-Scholes 
+    volatility from B-S such that Call_BS = Call_heston
+    with optimizer, to solve for volatility at various Ks and same expiry date
+
+Limitations
+Implementation address potential negative variance with a floor of 0
+
+Reference
+Zhu, Jianwei, A Simple and Exact Simulation Approach to Heston Model (July 1, 2008). 
+https://doi.org/10.3905/jod.2011.18.4.026, Available at SSRN: https://ssrn.com/abstract=1153950 or http://dx.doi.org/10.2139/ssrn.1153950
 """
 import sys
 import os
@@ -34,7 +46,6 @@ class Heston_Volatility:
         v0: initial variance of asset
     '''
     
-
     def __init__(self, T, N, rho, kappa, theta, sigma_v, v0, r, S0):
         
         self.T = T
@@ -132,10 +143,10 @@ class Heston_Volatility:
         Vt = np.zeros(N+1); Vt[0] = self.v0
         
         for i in range(self.N):
-            Z1 = self.rng.normal(0, 1)              #N~(0,1)
-            Z2 = self.rng.normal(0, 1)              #CORRECTION from N~(0, deltat**0.5); 
-                                                    #error causes dWt~N(0, dt**2) with significantly smaller stdev
-            dWtS = (self.dt)**0.5*Z1                #N~(0,deltat**0.5)
+            Z1 = self.rng.normal(0, 1)                                  #N~(0,1)
+            Z2 = self.rng.normal(0, 1)                                  #CORRECTION from N~(0, deltat**0.5); 
+                                                                        #error causes dWt~N(0, dt**2) with significantly smaller stdev
+            dWtS = (self.dt)**0.5*Z1                                    #N~(0,deltat**0.5)
             dWtv = (self.dt)**0.5*(self.rho*Z1+(1-self.rho**2)**0.5*Z2)
             Vt[i+1] = np.maximum(Vt[i] + self.kappa * (self.theta - Vt[i]) * self.dt + self.sigma_v * np.maximum(Vt[i]**0.5,0) * dWtv,0)
             St[i+1] = St[i] + self.r * St[i] * self.dt + Vt[i]**0.5 * St[i] * dWtS
@@ -160,6 +171,7 @@ class Heston_Volatility:
         return call_MC
 
 if __name__ == '__main__':
+    
     T = 1; N = 252; rho = -0.7; kappa = 0.02; theta = 0.12
     sigmav = 0.5; v0 = .3; r = 0.1; S0=100; K=90
 
