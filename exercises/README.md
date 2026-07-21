@@ -18,7 +18,8 @@
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
 
-### Optimal stopping 
+### Optimal stopping; 
+- number of states, reaching absorbing state is the end of game
 - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
     - stopping cutoff, $max (x_t, V_{t+1})$
     - $E[max(x_t, V_{t+1})] = \int_{0}^{V_{t+1}} V_{t+1} + \int_{V_{t+1}}^{1} x dx$      ~ Bellman Equation
@@ -32,10 +33,14 @@
         - where $E[h_{payout} * (N-1)]$ measures a fresh-round payout since hasn't flipped a tail
         - as first-round turns to be Head, it's equivalent to start the game fresh
   
-### Recursion, recurrence at uniformly random probabilities
+### Recursion, recurrence at uniformly random probabilities; OST
+- number of states, ending of game is dependent on one of states;
+- E[event] is conditional on first or previous outcome
 - cost of current step: 1
 - additional step to reach a state given current state
     - E[filps until both head and tail]
+    - E[rolling out same face value and end]
+    - E[seated with no-adjacent rule]
     - E[steps to cover all edges of a triangle]
     - stop game when reach repetitive value {1, 2, 3, 1, 2, 3}
         - expected payout given last-roll result
