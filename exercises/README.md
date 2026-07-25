@@ -57,4 +57,5 @@
 - with 2 fair dices, E[larger of 2 numbers]
 
 - rolling a dice 5 times, X and Y each be number of appearance for two number
-  
+
+### Tail-sum, volume of an n-dimensional simplex
