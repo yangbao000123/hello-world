@@ -2,9 +2,13 @@
 
 ### Uniformly random i.i.d. particles: bouncing leads to indistinguishable passing-through
 - 2 ants on a stick; 100 bugs on a stick: 
-- $max(x_1, x_2, ..., x_n); $
-- $E[M] = \int_{0}^{1} t*p(t)dt$ 
-- where p(t) defines probability density function
+    - $max(x_1, x_2, ..., x_n); $
+    - $E[M] = \int_{0}^{1} t*p(t)dt$ 
+    - where p(t) defines probability density function
+-  uniformally random -> independent events -> indicator variables -> linearity of expectation
+    - subset and sum values of elements
+        - independet inclusion/exclusion of $x_i$ contribution to subset sum value
+        - time for all options to be exercised (application)
 
 ### Choices available
 - passengers with one lost ticket to seat uniformly random
@@ -17,7 +21,9 @@
 - seating with no adjacent neighbors
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
-
+- non-divider occasions between dividier, divider and occasion prior to first divider
+    - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
+      
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
 - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
@@ -59,3 +65,10 @@
 - rolling a dice 5 times, X and Y each be number of appearance for two number
 
 ### Tail-sum, volume of an n-dimensional simplex
+- number of occassions to exceed 1 is equivalent to aggregated number of occassions when it hasn't reached 1
+- because 1 hasn't been reached, the number of draws increases
+    - let N = $\min {(n: U_1 + U_2 + ... + U_n > 1)}$
+        - draw ~ Unif(0,1)
+        - $\sum_{k=0}^{\inf} P(N\geq k) = \sum_{k=0}^{\inf} \frac{1}{n!} = e$ ~ Taylor's series expansion
+        - P(N>0) = 1 ~ always needs the first draw
+        - P(N>1) = 1 ~ in continuous distribution P(U=1)=0 for any pre-specified value draw
