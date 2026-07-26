@@ -2,7 +2,7 @@
 
 ### Uniformly random i.i.d. particles: bouncing leads to indistinguishable passing-through
 - 2 ants on a stick; 100 bugs on a stick: 
-    - $max(x_1, x_2, ..., x_n); $
+    - $\max(x_1, x_2, ..., x_n); $
     - $E[M] = \int_{0}^{1} t*p(t)dt$ 
     - where p(t) defines probability density function
 -  uniformally random -> independent events -> indicator variables -> linearity of expectation
@@ -23,7 +23,13 @@
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
 - non-divider occasions between dividier, divider and occasion prior to first divider
     - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
-      
+- expecation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
+    - forfeir if $E[V_{Current}] < E[V_{Next}]$
+    - to roll three rounds, $E[V_{Current}] \geq E[V_{Next}]$
+    - apply flooring, $E_{Next}$, to face values at each roll
+        - $E_{Third} = E_{Last} = 3.5$
+        - $E_{Second}$ to capture expected payout given 2nd round succeeds #E_{Third}$ and same applies to $E_{First}$
+          
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
 - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
@@ -68,7 +74,7 @@
 - number of occassions to exceed 1 is equivalent to aggregated number of occassions when it hasn't reached 1
 - because 1 hasn't been reached, the number of draws increases
     - let N = $\min {(n: U_1 + U_2 + ... + U_n > 1)}$
-        - draw ~ Unif(0,1)
+        - $U_i$ ~ Unif(0,1)
         - $\sum_{k=0}^{\inf} P(N\geq k) = \sum_{k=0}^{\inf} \frac{1}{n!} = e$ ~ Taylor's series expansion
         - P(N>0) = 1 ~ always needs the first draw
-        - P(N>1) = 1 ~ in continuous distribution P(U=1)=0 for any pre-specified value draw
+        - P(N>1) = 1 ~ in continuous distribution P(U=1)=0 for any pre-specified value draw, so needs a second draw
