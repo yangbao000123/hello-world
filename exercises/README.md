@@ -1,16 +1,25 @@
 ## Exercise
 
-### Uniformly random i.i.d. particles: bouncing leads to indistinguishable passing-through
-- 2 ants on a stick; 100 bugs on a stick: 
-    - $\max(x_1, x_2, ..., x_n); $
-    - $E[M] = \int_{0}^{1} t*p(t)dt$ 
-    - where p(t) defines probability density function
+### Uniformly random i.i.d. particles, linearity of expectation
 -  uniformally random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
         - independet inclusion/exclusion of $x_i$ contribution to subset sum value
         - time for all options to be exercised (application)
-
+- bouncing leads to indistinguishable passing-through
+    - 2 ants on a stick; 100 bugs on a stick: 
+        - $\max(x_1, x_2, ..., x_n); $
+        - $E[M] = \int_{0}^{1} t*p(t)dt$ 
+        - where p(t) defines probability density function
+          
 ### Choices available
+- expecation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
+    - forfeir if $E[V_{Current}] < E[V_{Next}]$
+    - to roll three rounds, $E[V_{Current}] \geq E[V_{Next}]$
+    - apply flooring, $E_{Next}$, to face values at each roll
+        - $E_{Third} = E_{Last} = 3.5$
+        - $E_{Second}$ to capture expected payout given 2nd round succeeds #E_{Third}$ and same applies to $E_{First}$
+- non-divider occasions between dividier, divider and occasion prior to first divider
+    - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
 - passengers with one lost ticket to seat uniformly random
     - first passenger seating situation + all rest passengers
     - seating decision prior to passenger k only delays a mis-seating decision and not suspends the process
@@ -21,15 +30,32 @@
 - seating with no adjacent neighbors
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
-- non-divider occasions between dividier, divider and occasion prior to first divider
-    - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
-- expecation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
-    - forfeir if $E[V_{Current}] < E[V_{Next}]$
-    - to roll three rounds, $E[V_{Current}] \geq E[V_{Next}]$
-    - apply flooring, $E_{Next}$, to face values at each roll
-        - $E_{Third} = E_{Last} = 3.5$
-        - $E_{Second}$ to capture expected payout given 2nd round succeeds #E_{Third}$ and same applies to $E_{First}$
-          
+  
+### Recursion, recurrence at uniformly random probabilities; OST
+- absorbing state at 0 and N, $E_0 = E_N = 0$
+    - Exit time of a random walk
+    - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
+- number of states, ending of game is dependent on one of states;
+- E[event] is conditional on first or previous outcome
+- cost of current step: 1
+- additional step to reach a state given current state
+    - E[filps until both head and tail]
+    - E[rolling out same face value and end]
+    - E[seated with no-adjacent rule]
+    - E[steps to cover all edges of a triangle]
+    - stop game when reach repetitive value {1, 2, 3, 1, 2, 3}
+        - expected payout given last-roll result
+        - earnings at each round
+                
+### Distinct-item set, indicator variable and symmetry
+- cumulative probability
+    - probability (2 dices roll number that are less than or equal to k) - probability ( 2 dices roll number that are less than or equal to k-1)
+    - Scenarios of first dice = k and second dice < k has 1*(k-1) ways, second scenario is a symmetry of the first scenario and also k-1 ways, and third scenario first=second=k, has 1*1=1 way to reach 
+- covariance of variables, $Cov(X_i, Y_i) = E[X_i, Y_i] - E[X_i]E[Y_i]$ 
+    - rolling a dice 5 times, X and Y each be number of appearance for two number
+- each of 5 boxes has 1 coupon drawn uniformly random without replacement. Number of boxes to acquire for collecting at least each of 5 coupons
+- 4 distinct cards in a set, 6 independent set; E[unique cards in total]
+
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
 - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
@@ -44,32 +70,7 @@
     - situation to forfeit: first-round payout < $E[h_{payout} * (N-1)]$
         - where $E[h_{payout} * (N-1)]$ measures a fresh-round payout since hasn't flipped a tail
         - as first-round turns to be Head, it's equivalent to start the game fresh
-  
-### Recursion, recurrence at uniformly random probabilities; OST
-- number of states, ending of game is dependent on one of states;
-- E[event] is conditional on first or previous outcome
-- cost of current step: 1
-- additional step to reach a state given current state
-    - E[filps until both head and tail]
-    - E[rolling out same face value and end]
-    - E[seated with no-adjacent rule]
-    - E[steps to cover all edges of a triangle]
-    - stop game when reach repetitive value {1, 2, 3, 1, 2, 3}
-        - expected payout given last-roll result
-        - earnings at each round
-- absorbing state at 0 and N, $E_0 = E_N = 0$
-    - Exit time of a random walk
-    - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
       
-### Distinct-item set, indicator function
-- each of 5 boxes has 1 coupon drawn uniformly random without replacement. Number of boxes to acquire for collecting at least each of 5 coupons
-
-- 4 distinct cards in a set, 6 independent set; E[unique cards in total]
-
-- with 2 fair dices, E[larger of 2 numbers]
-
-- rolling a dice 5 times, X and Y each be number of appearance for two number
-
 ### Tail-sum, volume of an n-dimensional simplex
 - number of occassions to exceed 1 is equivalent to aggregated number of occassions when it hasn't reached 1
 - because 1 hasn't been reached, the number of draws increases
