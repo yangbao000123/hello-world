@@ -8,13 +8,18 @@ Created on Sun Jul 26 13:37:15 2026
 paired programming exercise
 """
 
-'''
+''' Dynamic Programming
+14 July
 1. A deck has 50 red cards and 50 black cards. 
    Card is drawn one at a time without replacement,
    one may stop after any draw, and payoff is 2*#red/#drawn. 
    If never stops, all 100 cards are drawn.
    What is E[Payoff in $] if play optimally.
+   
 '''
+#V(r,b) = max(2r/(r+b), (50-r)/(100-r-b)V(r+1,b)+(50-b)/(100-r-b)V(r,b+1))
+
+
 
 
 

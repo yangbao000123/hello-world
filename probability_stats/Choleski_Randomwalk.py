@@ -15,6 +15,9 @@ Cholesky Project 13June2026 13:45 - 15:38
 THE CORRECTION is on checking correlation increment-level simulation with initial covariance matrix
 is because a. Choleski factor is multiplied with simulated normal random series, the concept in BM corresponds to increment-level as return in finance
            b. Price-level series is obtained by np.cumsum and it leads the series to be un-stationary with spruious/random correlation of two variables/dimensions
+
+Application
+to verify if a covariance matrix is symmetric and to be inputted in an optimizer
 """
 
 import numpy as np
