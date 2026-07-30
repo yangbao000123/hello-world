@@ -20,7 +20,7 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 '''
 #%%Levenshtein Distance, recursive search, dynamic programming
 '''
-    EXAMPLE s1='ab' s2='bc'
+    EXAMPLE s1='ab' s2='ac'
        Taking substitute-step at f(2,2) as an example, 
     because s1[i]='b' and s2[j]='a', 
     one of three approaches for addressing 'b' and 'c' is 
@@ -36,7 +36,7 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
     because the deletion is only applied to s1 string and s2 is not impacted; 
     my initial understanding was s2-index will change as well, so that's a misunderstanding. 
     At the one-step forward stage, comparing s1[1] and s2[2], 
-    it will go through del., ins. and sub. to check the costless way to address 'a' and 'bc';
+    it will go through del., ins. and sub. to check the costless way to address 'a' and 'ac';
     after the three branches there, it locates the cost at the one-step-forward stage, 
     and brings it up as cost of f(1,2), then add the 1 to locate cost of f(2,2) 
     by using del. for addressing s1[2] <> s2[2].
