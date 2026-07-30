@@ -18,6 +18,22 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 
 +programming paired from prob/stats exercises
 '''
+#%%
+'''Provide both recursive and iterative implementations, and explain the key idea.
+'''
+import numpy as np
+import math
+
+# 3^4
+# lne^6 = 6 lne
+# ln3^4 = e^(4 ln3)
+
+base = 3
+exponent = 4
+math.e**(np.log(base)*exponent) #invalid for negative base
+
+
+
 #%%Levenshtein Distance, recursive search, dynamic programming
 '''
     EXAMPLE s1='ab' s2='ac'
