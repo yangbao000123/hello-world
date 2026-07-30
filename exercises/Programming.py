@@ -18,6 +18,47 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 
 +programming paired from prob/stats exercises
 '''
+#%%Levenshtein Distance, recursive search, dynamic programming
+'''
+    EXAMPLE s1='ab' s2='bc'
+       Taking substitute-step at f(2,2) as an example, 
+    because s1[i]='b' and s2[j]='a', 
+    one of three approaches for addressing 'b' and 'c' is 
+    to substitute at this step and forward, the cost will be 1+f(1,1), 
+    where f(1,1) will include the cost after comparing again del., ins., or substitution. 
+    It means addressing 'b' and 'a' is the start point of fixing two strings, 
+    rather than one-state of only fixing 'b' and 'a', 
+    because f(1,1) includes fixing i-1, j-1 elements until reaches 0.
+    
+        In terms of Delete branch, for s1[2] and s2[2] are 'b' and 'c' that are different, 
+    1+f(1,2) has the cost of deleting s1[2] is 1 
+    and after deleting s1[2], s1 becomes 'a' so it compares s1[1] with s2[2] 'c' 
+    because the deletion is only applied to s1 string and s2 is not impacted; 
+    my initial understanding was s2-index will change as well, so that's a misunderstanding. 
+    At the one-step forward stage, comparing s1[1] and s2[2], 
+    it will go through del., ins. and sub. to check the costless way to address 'a' and 'bc';
+    after the three branches there, it locates the cost at the one-step-forward stage, 
+    and brings it up as cost of f(1,2), then add the 1 to locate cost of f(2,2) 
+    by using del. for addressing s1[2] <> s2[2].'''
+def f(i, j):
+    # Base cases
+    if i == 0: return j  # insert j characters
+    if j == 0: return i  # delete i characters
+
+    # If they match, no cost, just move on
+    if s1[i-1] == s2[j-1]:
+        return f(i-1, j-1)
+    
+    # IF THEY DON'T MATCH: Try ALL THREE operations!
+    # 1. Delete s1[i-1] -> cost 1, then fix s1[:i-1] vs s2[:j]
+    delete = 1 + f(i-1, j)
+    # 2. Insert s2[j-1] into s1 -> cost 1, then fix s1[:i] vs s2[:j-1]
+    insert = 1 + f(i, j-1)
+    # 3. Substitute s1[i-1] to match s2[j-1] -> cost 1, then fix s1[:i-1] vs s2[:j-1]
+    substitute = 1 + f(i-1, j-1)
+    
+    return min(delete, insert, substitute)
+
 
 #%% meeting room bookings
 
@@ -45,7 +86,7 @@ def min_rooms(intervals):
     for each in range(len(intervals)-1):
         current_start,current_end = intervals[each]
         next_start, next_end = intervals[each+1]
-        if next_start >= current_end: #skipped checking for intervals that share a room
+        if next_start >= current_end: #skipped checking for intervals that share a room ^^^###^^^
             rooms[each] = 0
     
     a = 0
@@ -93,7 +134,9 @@ for i in range(1, m+1):
         if s1[i-1] == s2[j-1]:
             dp[i][j] = dp[i-1][j-1]
         else:
-            dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])
+            #min(deletion, insertion, substitution) an autonomy for these three
+            #how does min correspond to the correct operation?
+            dp[i][j] = 1 + min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) 
 #%%            
 ''' Dynamic Programming
 14 July
