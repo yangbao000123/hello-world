@@ -39,7 +39,18 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
     it will go through del., ins. and sub. to check the costless way to address 'a' and 'bc';
     after the three branches there, it locates the cost at the one-step-forward stage, 
     and brings it up as cost of f(1,2), then add the 1 to locate cost of f(2,2) 
-    by using del. for addressing s1[2] <> s2[2].'''
+    by using del. for addressing s1[2] <> s2[2].
+    
+        To reiterate, in Insertion situation, 
+    1+f(2,1) suggests the underlying s1 is 'abc' and s2 'ac' 
+    while in the coding implementation, this information isnt tracked 
+    and instead marked as cost of an insertion process to be aggregated at f(2,1); 
+    it means after implicitly "tracking" 'abc' and 'ac', 
+    f(2,1) looks to find min cost of addressing 'ab' and 'a' since element-c is handled. 
+    For 'ab' and 'a', it locates the costless operation after comparing del., ins. and sub., 
+    and bring the cost of f(2,1) to 1+f(2,1) for aggregated cost of handling the two strings 
+    by entering insertion to handle s1[2]<>s2[2] as the initial step.
+    '''
 def f(i, j):
     # Base cases
     if i == 0: return j  # insert j characters
