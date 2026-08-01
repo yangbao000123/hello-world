@@ -17,6 +17,12 @@ daily rebalancing, quintile portfolios, long-short returns.
 Performance metrics
 Sharpe ratio, max drawdown, annualised return, turnover
 Plot cumulative returns, drawdown chart, rolling Sharpe.
+
+Reference
+Frazzini, Andrea and Moskowitz, Tobias J. and Moskowitz, Tobias J. and Asness, Cliff S. and Israel, Ronen, 
+Fact, Fiction and Momentum Investing (May 9, 2014). 
+Journal of Portfolio Management, Fall 2014 (40th Anniversary Issue), 
+Available at SSRN: https://ssrn.com/abstract=2435323 or http://dx.doi.org/10.2139/ssrn.2435323
 """
 
 import requests
