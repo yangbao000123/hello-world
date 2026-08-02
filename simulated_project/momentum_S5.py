@@ -29,6 +29,7 @@ import requests
 import numpy as np
 import pandas as pd
 import yfinance as yh 
+import matplotlib.pyplot as plt
 #%%S&P 500 constituent-daily price from yahoo finance; survivorship bias (note limitations)
 
 url = 'https://en.m.wikipedia.org/wiki/List_of_S%26P_500_companies'
@@ -102,6 +103,29 @@ long_short = top-bottom
 sharpe = long_short.mean()/long_short.std() * np.sqrt(12)
 cumulative = (1+long_short).cumprod() # if log return, cumsum then exp?
 max_dd = (cumulative/cumulative.cummax()-1).min()
- 
+
+rolling_period = 6
+rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
+
+fig, ax1 = plt.subplots()
+ax1.set_xlabel('Timestamp')
+ax1.set_ylabel('Cumulative Return', color='lightpink')
+ax1.plot(rolling_sharpe.index, cumulative, color='lightpink', linewidth=1.2)
+ax1.tick_params(axis='y', labelcolor='lightpink')
+ax1.tick_params(axis='x', rotation=45)
+ax1.legend(['Cumulative Return'], loc='upper left')
+
+ax2 = ax1.twinx()
+ax2.set_ylabel('Rolling Sharpe', color='lightseagreen')
+ax2.axhline(sharpe, color='lightseagreen', linestyle='--', alpha=0.5)
+ax2.plot(rolling_sharpe.index, rolling_sharpe, color='lightseagreen', linewidth=1.2)
+ax2.tick_params(axis='y', labelcolor='lightseagreen')
+ax2.tick_params(axis='x', rotation=45)
+ax2.legend(['Rolling Sharpe'], loc='upper right')
+
+
+fig.tight_layout()
+plt.title('W minus L Performance')
+plt.show()
 
 
