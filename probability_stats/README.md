@@ -24,3 +24,5 @@ b. total trials of failure before reaching a success
    - per each fresh start, E[waiting time] = $\frac{1}{\lambda}$ following Poisson Process with arrival rate $\lambda$ = $\frac{1}{2} * \frac{2}{\lambda}$
    - uniformly random arrival at on Unif~[0,L] produces E[remaining waiting time] = E[ $\frac{L}{2}$ ]
    - length-based sampling indicates E[length of whole arrival interval one landed in] = E[L] = $\frac{2}{\lambda}$ ~ Gamma(2,$\lambda$) for density of interval arrival, $x \lambda e^{-\lambda x}$
+- General Renewal Process
+   - when waiting time not necessarily follows exponential distribution, E[waiting time]= $\frac{\mu + \sigma^2}{2 \mu}$
