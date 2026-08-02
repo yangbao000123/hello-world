@@ -30,25 +30,21 @@ import numpy as np
 import pandas as pd
 import yfinance as yh 
 import matplotlib.pyplot as plt
-#%%S&P 500 constituent-daily price from yahoo finance; survivorship bias (note limitations)
+# S&P 500 constituent-daily price from yahoo finance; survivorship bias (note limitations)
 
-url = 'https://en.m.wikipedia.org/wiki/List_of_S%26P_500_companies'
-headers = {'User-Agent': 'Mozilla/5.0'}
-
-html = requests.get(url, headers=headers).text
-tables = pd.read_html(html)
-sp500_table = tables[0]
-tickers = sp500_table['Symbol'].tolist()
-
+url = 'https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv'
+sp500 = pd.read_csv(url)
+tickers = sp500['Symbol'].tolist()
 data = yh.download(tickers, start='2023-01-01', end='2026-07-30') #only has 'Close' price
 close = data['Adj Close']
+
 '''3 Failed downloads:
 ['BRK.B']: possibly delisted; no timezone found
 ['BF.B', 'BAX']: possibly delisted; no price data found  (1d 2022-01-01 -> 2026-07-30)'''
 
 data['Close'].isna().sum()
 
-#%% Compute daily log returns, monthly cadence return; momentum signal based off of monthly return
+# Compute daily log returns, monthly cadence return; momentum signal based off of monthly return
 '''by nature of month-end return, 
 it means for portfolio simulation, position is entered at next-month beginning timestamp; 
 next-month return is to be earned/logged for performance that corresponds with current-month position entered, 
@@ -71,7 +67,7 @@ momentum_sgnl = (1+return_monthl).rolling(window=11).apply(np.prod, raw=True) - 
 momentum_sgnl = momentum_sgnl.shift(1) # at t, the signal is of window t-1 to t-11
 
 
-#%% Vectorized backtest engine
+# Vectorized backtest engine
 # daily rebalancing, quintile portfolios, long-short returns.
 # each month, rank tickers by momentum signal to find winner and loser, compute monthly W-L return
 
