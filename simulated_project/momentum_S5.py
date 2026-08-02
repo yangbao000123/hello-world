@@ -48,6 +48,11 @@ close = data['Adj Close']
 data['Close'].isna().sum()
 
 #%% Compute daily log returns, monthly cadence return; momentum signal based off of monthly return
+'''by nature of month-end return, 
+it means for portfolio simulation, position is entered at next-month beginning timestamp; 
+next-month return is to be earned/logged for performance that corresponds with current-month position entered, 
+assuming an enter-and-hold for monthly balance
+'''
 
 price_monthly = data['Close'].resample('ME').last()
 return_monthl = price_monthly.pct_change()
@@ -64,13 +69,35 @@ momen = price.shift(1).diff(11)/price.shift(12)
 momentum_sgnl = (1+return_monthl).rolling(window=11).apply(np.prod, raw=True) - 1
 momentum_sgnl = momentum_sgnl.shift(1) # at t, the signal is of window t-1 to t-11
 
-#%%Vectorized backtest engine
-#daily rebalancing, quintile portfolios, long-short returns.
+
+#%% Vectorized backtest engine
+# daily rebalancing, quintile portfolios, long-short returns.
+# each month, rank tickers by momentum signal to find winner and loser, compute monthly W-L return
+
+flattened = momentum_sgnl.reset_index().melt(
+    id_vars='Date', 
+    var_name='ticker',   #columns aggregated to single column for groupby later
+    value_name='signal'  #new column to host ticker's momentum signal score
+    )
+return_align = return_monthl.shift(-1)
+flattened['return_aligned'] = return_align.reset_index().melt(id_vars='Date', var_name='ticker', value_name='return_aligned')['return_aligned']
+
+flattened['decile'] = flattened.groupby('Date')['signal'].transform( # transform adds qcut result to a column with the same index in flattened
+    lambda x:pd.qcut(x,10, labels=False, 
+                           duplicates='drop') )
+
+top = flattened[flattened['decile']==9].groupby('Date')['return_aligned'].mean()
+bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mean()
+
+long_short = top-bottom
 
 #Performance metrics
 #Sharpe ratio, max drawdown, annualised return, turnover
 #Plot cumulative returns, drawdown chart, rolling Sharpe.
 
-
+sharpe = long_short.mean()/long_short.std() * np.sqrt(12)
+cumulative = (1+long_short).cumprod() # if log return, cumsum then exp?
+max_dd = (cumulative/cumulative.cummax()-1).min()
+ 
 
 
