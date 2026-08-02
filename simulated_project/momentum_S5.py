@@ -83,9 +83,13 @@ return_align = return_monthl.shift(-1)
 flattened['return_aligned'] = return_align.reset_index().melt(id_vars='Date', var_name='ticker', value_name='return_aligned')['return_aligned']
 
 flattened['decile'] = flattened.groupby('Date')['signal'].transform( # transform adds qcut result to a column with the same index in flattened
-    lambda x:pd.qcut(x,10, labels=False, 
-                           duplicates='drop') )
+                                                lambda x:pd.qcut(x,
+                                                                 10, #10 quantiles
+                                                                 labels=False, 
+                                                                 duplicates='drop') )
 
+# additional index handling after producing quantiles
+# applied = flattened.groupby('Date')['signal'].apply(lambda x: pd.qcut(x, 2, labels=False, duplicates='drop'))
 top = flattened[flattened['decile']==9].groupby('Date')['return_aligned'].mean()
 bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mean()
 
