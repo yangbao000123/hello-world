@@ -25,4 +25,4 @@ b. total trials of failure before reaching a success
    - uniformly random arrival at on Unif~[0,L] produces E[remaining waiting time] = E[ $\frac{L}{2}$ ]
    - length-based sampling indicates E[length of whole arrival interval one landed in] = E[L] = $\frac{2}{\lambda}$ ~ Gamma(2,$\lambda$) for density of interval arrival, $x \lambda e^{-\lambda x}$
 - General Renewal Process
-   - when waiting time not necessarily follows exponential distribution, E[waiting time]= $\frac{\mu + \sigma^2}{2 \mu}$
+   - when waiting time not necessarily follows exponential distribution, E[waiting time]= $\frac{E[X^2]}{2\mu}$ = $\frac{\mu^2 + \sigma^2}{2 \mu}$
