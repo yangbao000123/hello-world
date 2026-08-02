@@ -20,5 +20,7 @@ b. total trials of failure before reaching a success
 
 ### Poisson Distribution
 - memoryless property of arrivals
-   - uniformly random arrival corresponds with length-biased sampling, meaning the arrival isn't expected to occur at mid-point of a waiting interval
-   - per each fresh start, E[waiting time] = $\frac{1}{\lambda}$ following Poisson Process with arrival rate $\lambda$.
+   - uniformly random arrival with length-biased sampling, meaning a.the random arrival is b.not expected to occur at mid-point of a waiting interval
+   - per each fresh start, E[waiting time] = $\frac{1}{\lambda}$ following Poisson Process with arrival rate $\lambda$ = $\frac{1}{2} * \frac{2}{\lambda}$
+   - uniformly random arrival at on Unif~[0,L] produces E[remaining waiting time] = E[ $\frac{L}{2}$ ]
+   - length-based sampling indicates E[length of whole arrival interval one landed in] = E[L] = $\frac{2}{\lambda}$ ~ Gamma(2,$\lambda$) for density of interval arrival, $x \lambda e^{-\lambda x}$
