@@ -18,6 +18,41 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 
 +programming paired from prob/stats exercises
 '''
+
+#%%
+arr = [-3,-3,-3]; k = 1
+mins = []
+if len(arr)==k==1: mins=arr
+for i in range(len(arr)-k+1):
+    k_window = arr[i:i+k]
+    print(i, i+k)
+    if len(k_window) == k:
+        print(arr[i:i+k],i, len(arr), min(k_window))
+        mins.append(min(arr[i:i+k]))
+#%%
+import pandas as pd
+rows = [{"ticker": "AAPL", "amount": 10, "region":"US"}, 
+        {"ticker": "MSFT", "amount": 4, "region":"US"}, 
+        {"ticker": "AAPL", "amount": 6, "region":"US"}]
+
+df = pd.DataFrame(rows)
+df.groupby('ticker').sum()
+c = df.groupby('ticker').agg(
+    total = ('amount', 'sum'),
+    averg = ('amount', 'mean'),
+    count = ('amount', 'count')
+    )
+
+'''pivot = pd.pivot_table(df, 
+                       values = 'amount',
+                       fill_value=0,
+                       index = 'region',
+                       columns = 'ticker',
+                       aggfunc= 'sum')
+
+rolling = df['amount'].rolling(3).mean()
+
+resample = df['amount'].resample('ME').last()'''
 #%%
 '''Provide both recursive and iterative implementations, and explain the key idea.
 '''
