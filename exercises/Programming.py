@@ -24,6 +24,16 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 # sliding window: deque solution ^^^###^^^
 # meeting room booking: check same room availability 
 # exponential calc via iterative squaring 
+# kth hamming number versus Prime Factorization via Trial Division
+
+#%% e^pi versus pi^e
+# https://math.stackexchange.com/questions/7892/comparing-pie-and-e-pi-without-calculating-themzz
+# a. apply natual log to both sides and concavity of ln, x-1 > lnx for x<>1
+# b. with x = pi/e-1, e^x > 1+x; 
+#            e^(pi/e - 1) > pi/e,           ~ https://math.stackexchange.com/questions/504663/simplest-or-nicest-proof-that-1x-le-ex
+#            e^(pi/e) / e > pi / e,         ~ e^-1 = 1/e 
+#                e^(pi/e) > pi,             ~ remove e
+#                    e^pi > pi^e            ~ exponential of e on both sides
 
 #%% Sliding window minimum
 
