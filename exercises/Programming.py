@@ -19,7 +19,14 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 +programming paired from prob/stats exercises
 '''
 
-#%%
+#%% TASKS, week 3rd Aug
+
+# sliding window: deque solution ^^^###^^^
+# meeting room booking: check same room availability 
+# exponential calc via iterative squaring 
+
+#%% Sliding window minimum
+
 arr = [-3,-3,-3]; k = 1
 mins = []
 if len(arr)==k==1: mins=arr
@@ -29,7 +36,8 @@ for i in range(len(arr)-k+1):
     if len(k_window) == k:
         print(arr[i:i+k],i, len(arr), min(k_window))
         mins.append(min(arr[i:i+k]))
-#%%
+        
+#%% pivot in pandas
 import pandas as pd
 rows = [{"ticker": "AAPL", "amount": 10, "region":"US"}, 
         {"ticker": "MSFT", "amount": 4, "region":"US"}, 
@@ -71,6 +79,8 @@ math.e**(np.log(base)*exponent) #invalid for negative base
 
 #%%Levenshtein Distance, recursive search, dynamic programming
 '''
+    MIN(Del., Ins., Sub.)
+    
     EXAMPLE s1='ab' s2='ac'
        Taking substitute-step at f(2,2) as an example, 
     because s1[i]='b' and s2[j]='a', 
@@ -102,6 +112,7 @@ math.e**(np.log(base)*exponent) #invalid for negative base
     and bring the cost of f(2,1) to 1+f(2,1) for aggregated cost of handling the two strings 
     by entering insertion to handle s1[2]<>s2[2] as the initial step.
     '''
+
 def f(i, j):
     # Base cases
     if i == 0: return j  # insert j characters
