@@ -25,12 +25,33 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 # meeting room booking: check same room availability 
 # exponential calc via iterative squaring 
 # kth hamming number versus Prime Factorization via Trial Division
+#%% exponential calc via iterative squaring 
+def power(base, exponent):
+    
+    powered = 1 # x^0
+    while exponent > 0: #CORRECTION exponent to be 0, 1 not enough
+        if exponent%2==1:
+            powered *= base
+        base = base**2    #CORRECTION from base = base^2
+        exponent //= 2
+    
+    return powered
+    
+print(power(2, 10))
 
+'''
+powered = 1
+expo = 10, powered = 1, base = 4, expo = 5, 
+expo = 5, powered = 1*4, base = 
+
+'''
 #%% e^pi versus pi^e
 # https://math.stackexchange.com/questions/7892/comparing-pie-and-e-pi-without-calculating-themzz
 # a. apply natual log to both sides and concavity of ln, x-1 > lnx for x<>1
-# b. with x = pi/e-1, e^x > 1+x; 
-#            e^(pi/e - 1) > pi/e,           ~ https://math.stackexchange.com/questions/504663/simplest-or-nicest-proof-that-1x-le-ex
+# b. with x = pi/e-1, e^x > 1+x;            ~ https://math.stackexchange.com/questions/504663/simplest-or-nicest-proof-that-1x-le-ex
+#                                           ~ e^x convex, y=1+x tangent to e^x at x = 0
+#                                           ~ 1+x <= 1+x+x^2/2!+... = e^x, Taylor Series
+#            e^(pi/e - 1) > pi/e,           
 #            e^(pi/e) / e > pi / e,         ~ e^-1 = 1/e 
 #                e^(pi/e) > pi,             ~ remove e
 #                    e^pi > pi^e            ~ exponential of e on both sides
