@@ -79,3 +79,17 @@
         - $\sum_{k=0}^{\inf} P(N\geq k) = \sum_{k=0}^{\inf} \frac{1}{n!} = e$ ~ Taylor's series expansion
         - P(N>0) = 1 ~ always needs the first draw
         - P(N>1) = 1 ~ in continuous distribution P(U=1)=0 for any pre-specified value draw, so needs a second draw
+
+### Number anlaysis
+- $e^\pi$ versus $\pi^e$, [source](https://math.stackexchange.com/questions/7892/comparing-pie-and-e-pi-without-calculating-themzz), [less equal](https://math.stackexchange.com/questions/504663/simplest-or-nicest-proof-that-1x-le-ex)
+   - apply natual log to both sides and concavity of ln, $x-1 > ln x$ for x<>1
+<br> with $x = \frac{\pi}{e}-1,$
+```math
+\begin{aligned}
+  e^x > 1+x \\
+  e^{\frac{\pi}{e}} - 1 > \frac{\pi}{e} \\
+  \frac{e^{\frac{\pi}{e}}}{e} > \frac{\pi}{e} \\
+  e^{\frac{\pi}{e}} > \pi \\              
+  e^\pi > \pi^e \\
+\end{aligned}
+```
