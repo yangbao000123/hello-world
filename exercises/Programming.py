@@ -33,7 +33,7 @@ def power(base, exponent):
             powered *= base
         base = base**2    #CORRECTION from base = base^2
         exponent //= 2
-    
+        print(base, exponent, powered)
     return powered
     
 print(power(2, 10))
@@ -41,8 +41,10 @@ print(power(2, 10))
 '''
 powered = 1
 expo = 10, powered = 1, base = 4, expo = 5, 
-expo = 5, powered = 1*4, base = 
+expo = 5, powered = 1*4, base = 4**2, expo = 2 
 
+square the base
+base^2 <> base**2
 '''
 #%% e^pi versus pi^e
 # https://math.stackexchange.com/questions/7892/comparing-pie-and-e-pi-without-calculating-themzz
