@@ -23,7 +23,6 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 
 # sliding window: deque solution ^^^###^^^
 # meeting room booking: check same room availability 
-# exponential calc via iterative squaring 
 # kth hamming number versus Prime Factorization via Trial Division
 #%% exponential calc via iterative squaring 
 def power(base, exponent):
