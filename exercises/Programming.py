@@ -24,6 +24,37 @@ Saturday (part of your deep‑work block): Apply coding to your projects or work
 # sliding window: deque solution ^^^###^^^
 # meeting room booking: check same room availability 
 # kth hamming number versus Prime Factorization via Trial Division
+
+#%% reversal +++ Carry variable
+a=[9,9,9,9,9,9,9]
+b=[9,9,9,9]
+
+l1 = a[::-1]
+l2 = b[::-1]
+
+a_s =[str(i) for i in l1]; a_str = ''.join(a_s)
+b_s =[str(i) for i in l2]; b_str = ''.join(b_s)
+
+res_str = str(int(a_str)+int(b_str))
+
+res_rev = list(res_str[::-1])
+res_rev = [int(i) for i in res_rev]
+
+#%% reverse entire string, then individual word
+
+s = "  hello   world  "
+rev = [i for i in s.split(' ') if i != ''][::-1]
+str_r = ''
+each_space = ''
+for each in rev:
+    each_space = each+' '
+    #print(each_space)
+    str_r += each_space
+    #print(each)
+    #final = " ".join(each)
+str_r = str_r[:-1]
+
+
 #%% exponential calc via iterative squaring 
 def power(base, exponent):
     
