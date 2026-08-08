@@ -1,1 +1,1 @@
-# responsibility and expectation
+# responsibility and aim
