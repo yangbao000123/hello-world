@@ -27,9 +27,11 @@
 - best candidate selection
     - given the best candidate is at k, the best will be selected if secondary-best candidate prior to k is within the rejection window
     - reindex summation bounds to align with Harmonic Series
-- seating with no adjacent neighbors
+- seating with no adjacent neighbors, shrinking size of audience dependent on seating options
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
+- surviving sharks, finite number of sharks 
+    - a shark and out-pace its two neighbors
   
 ### Recursion, recurrence at uniformly random probabilities; OST
 - absorbing state at 0 and N, $E_0 = E_N = 0$
