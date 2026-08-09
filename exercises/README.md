@@ -50,14 +50,21 @@
         - earnings at each round
                 
 ### Distinct-item set, indicator variable and symmetry
-- cumulative probability
-    - probability (2 dices roll number that are less than or equal to k) - probability ( 2 dices roll number that are less than or equal to k-1)
-    - Scenarios of first dice = k and second dice < k has 1*(k-1) ways, second scenario is a symmetry of the first scenario and also k-1 ways, and third scenario first=second=k, has 1*1=1 way to reach 
-- covariance of variables, $Cov(X_i, Y_i) = E[X_i, Y_i] - E[X_i]E[Y_i]$ 
-    - rolling a dice 5 times, X and Y each be number of appearance for two number
-- each of 5 boxes has 1 coupon drawn uniformly random without replacement. Number of boxes to acquire for collecting at least each of 5 coupons
-- 4 distinct cards in a set, 6 independent set; E[unique cards in total]
-
+- indicator variable
+    - expectation and probability
+        - probability (2 dices roll number that are less than or equal to k) - probability ( 2 dices roll number that are less than or equal to k-1)
+            - scenarios of first dice = k and second dice < k has 1*(k-1) ways, second scenario is a symmetry of the first scenario and also k-1 ways, and third scenario first=second=k, has 1*1=1 way to reach 
+        - each of 5 boxes has 1 coupon drawn uniformly random without replacement. Number of boxes to acquire for collecting at least each of 5 coupons
+        - 4 distinct cards in a set, 6 independent set; E[unique cards in total]
+    - variance if independent, Var=$E[I^2]-E^2[I] = p-p^2 = p(1-p) = pq$
+    - covariance of variables, $Cov(X_i, Y_i) = E[X_i, Y_i] - E[X_i]E[Y_i]$ 
+            - rolling a dice 5 times, X and Y each be number of appearance for two number
+    - cumulative probability
+- Harmonic series
+    - $\sum_{k=0}^{\inf}\frac{1}{k!} = e$ ~ Taylor Series
+    - $\sum_{k=1}^{n}\frac{1}{k} = H_n = ln(n) + \gamma + O(\frac{1}{n})$
+    - $H^(2)_n \to \frac{\pi^2}{6}$
+      
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
 - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
@@ -74,7 +81,7 @@
         - as first-round turns to be Head, it's equivalent to start the game fresh
       
 ### Tail-sum, volume of an n-dimensional simplex
-- number of occassions to exceed 1 is equivalent to aggregated number of occassions when it hasn't reached 1
+- number of occassions to exceed 1 is equivalent to aggregated number of occasions when it hasn't reached 1
 - because 1 hasn't been reached, the number of draws increases
     - let N = $\min {(n: U_1 + U_2 + ... + U_n > 1)}$
         - $U_i$ ~ Unif(0,1)
