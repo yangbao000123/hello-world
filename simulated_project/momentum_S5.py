@@ -12,10 +12,14 @@ Compute daily log returns.
 Build the momentum signal: 12-month return, skip most recent month.
 
 Vectorized backtest engine
-daily rebalancing, quintile portfolios, long-short returns.
+- daily rebalancing, quintile portfolios, long-short returns
+- volatility targeting
+- covariance shrinkage on weights and Markowitz mean-variance optimizer
+
 
 Performance metrics
 Sharpe ratio, max drawdown, annualised return, turnover
+VaR, Expected Shortfall
 Plot cumulative returns, drawdown chart, rolling Sharpe.
 
 Reference
@@ -105,15 +109,27 @@ bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mea
 
 long_short = top-bottom
 
-#Performance metrics
+# volatility targeting by adjusting execution trade size
+vol_target = 0.2
+vol_trailn = long_short.rolling(6).std().shift(1)*(12**0.5)
+vol_scalar = vol_target/vol_trailn
+return_vol = long_short*vol_scalar
+
+# Performance metrics
 '''
 Sharpe ratio, max drawdown, annualised return, turnover
-Plot cumulative returns, drawdown chart, rolling Sharpe.
+VaR and Expected Shortfall
+Plot cumulative returns, drawdown chart, rolling Sharpe
 '''
 sharpe = long_short.mean()/long_short.std() * np.sqrt(12)
 cumulative = (1+long_short).cumprod() # if log return, cumsum then exp?
 max_dd = (cumulative/cumulative.cummax()-1).min()
 
+VaR = long_short.quantile(0.5)
+shortfall = long_short[long_short<=VaR].mean()
+
+
+# Plotting
 rolling_period = 6
 rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
 
