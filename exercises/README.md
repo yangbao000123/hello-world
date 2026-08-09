@@ -63,7 +63,7 @@
 - Harmonic series
     - $\sum_{k=0}^{\inf}\frac{1}{k!} = e$ ~ Taylor Series
     - $\sum_{k=1}^{n}\frac{1}{k} = H_n = ln(n) + \gamma + O(\frac{1}{n})$
-    - $H^(2)_n \to \frac{\pi^2}{6}$
+    - $H^{(2)}_n \to \frac{\pi^2}{6}$
       
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
