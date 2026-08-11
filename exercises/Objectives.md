@@ -1,5 +1,3 @@
-## Exercise
-
 ## To be iterated
 - recurring themes in probability and coding practices
     - different ways a theme is being described
@@ -8,17 +6,26 @@
     - state mathematical and technical concepts behind succinct approaches and relevant conditions
 - deliver thematic highlights and present corresponding skillset for optimize interview performance under limited time and attention     
 
+## Exercise
+
 ### Uniformly random i.i.d. particles, linearity of expectation
 -  uniformly random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
         - independent inclusion/exclusion of $x_i$ contribution to subset sum value
         - time for all options to be exercised (application)
+    - E[# highest records of random n-permutation] versus E[# strictly increasing n-rank]
+        -  among k elements in each list,
+            -  $\frac{1}{k}$-chance the current element is the highest;
+            -  each element to be a record at current length is independent event
+        -  for each k-element list, $k!$-way to produce the list and $\frac{1}{k}$-chance a strictly increasing rank appears
+    - handshake permutations
+    - surviving sharks, finite number of sharks 
 - bouncing leads to indistinguishable passing-through
     - 2 ants on a stick; 100 bugs on a stick: 
         - $\max(x_1, x_2, ..., x_n); $
         - $E[M] = \int_{0}^{1} t*p(t)dt$ 
         - where p(t) defines probability density function
-          
+
 ### Choices available
 - expecation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
     - forfeir if $E[V_{Current}] < E[V_{Next}]$
@@ -38,8 +45,7 @@
 - seating with no adjacent neighbors, shrinking size of audience dependent on seating options
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
-- surviving sharks, finite number of sharks 
-    - a shark and out-pace its two neighbors
+
   
 ### Recursion, recurrence at uniformly random probabilities; OST
 - absorbing state at 0 and N, $E_0 = E_N = 0$
