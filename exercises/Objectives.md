@@ -1,9 +1,17 @@
 ## Exercise
 
+## To be iterated
+- recurring themes in probability and coding practices
+    - different ways a theme is being described
+        - extract emphasis and various perspectives to examine the theme according to various descriptions
+        - pin down distinctions between similar descriptions and provide reasonings to discovered distinctions
+    - state mathematical and technical concepts behind succinct approaches and relevant conditions
+- deliver thematic highlights and present corresponding skillset for optimize interview performance under limited time and attention     
+
 ### Uniformly random i.i.d. particles, linearity of expectation
--  uniformally random -> independent events -> indicator variables -> linearity of expectation
+-  uniformly random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
-        - independet inclusion/exclusion of $x_i$ contribution to subset sum value
+        - independent inclusion/exclusion of $x_i$ contribution to subset sum value
         - time for all options to be exercised (application)
 - bouncing leads to indistinguishable passing-through
     - 2 ants on a stick; 100 bugs on a stick: 
