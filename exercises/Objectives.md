@@ -17,7 +17,8 @@
         -  among k elements in each list,
             -  $\frac{1}{k}$-chance the current element is the highest;
             -  each element to be a record at current length is independent event
-        -  for each k-element list, $k!$-way to produce the list and $\frac{1}{k}$-chance a strictly increasing rank appears
+            -  variance if independent, Var= $E[I^2]-E^2[I] = p-p^2 = p(1-p) = pq$
+        -  for each k-element list, $k!$-way to produce the list and $\frac{1}{k!}$-chance a strictly increasing rank appears
     - handshake permutations
     - surviving sharks, finite number of sharks 
 - bouncing leads to indistinguishable passing-through
@@ -70,7 +71,6 @@
             - scenarios of first dice = k and second dice < k has 1*(k-1) ways, second scenario is a symmetry of the first scenario and also k-1 ways, and third scenario first=second=k, has 1*1=1 way to reach 
         - each of 5 boxes has 1 coupon drawn uniformly random without replacement. Number of boxes to acquire for collecting at least each of 5 coupons
         - 4 distinct cards in a set, 6 independent set; E[unique cards in total]
-    - variance if independent, Var=$E[I^2]-E^2[I] = p-p^2 = p(1-p) = pq$
     - covariance of variables, $Cov(X_i, Y_i) = E[X_i, Y_i] - E[X_i]E[Y_i]$ 
             - rolling a dice 5 times, X and Y each be number of appearance for two number
     - cumulative probability
