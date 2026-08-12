@@ -28,13 +28,13 @@
         - where p(t) defines probability density function
 
 ### Choices available
-- expecation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
-    - forfeir if $E[V_{Current}] < E[V_{Next}]$
+- expectation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
+    - forfeit if $E[V_{Current}] < E[V_{Next}]$
     - to roll three rounds, $E[V_{Current}] \geq E[V_{Next}]$
     - apply flooring, $E_{Next}$, to face values at each roll
         - $E_{Third} = E_{Last} = 3.5$
         - $E_{Second}$ to capture expected payout given 2nd round succeeds #E_{Third}$ and same applies to $E_{First}$
-- non-divider occasions between dividier, divider and occasion prior to first divider
+- non-divider occasions between divider, divider and occasion prior to first divider
     - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
 - passengers with one lost ticket to seat uniformly random
     - first passenger seating situation + all rest passengers
@@ -52,6 +52,10 @@
 - absorbing state at 0 and N, $E_0 = E_N = 0$
     - Exit time of a random walk
     - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
+- explore-and-exploit
+    - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
+    - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$
+    - CORRECTION: value of next draw has lower bound as $V_{k-1}$ to describe keep drawing if $X_k \geq V_{k-1}$ instead of $V_k$ where it includes current kth draw value
 - number of states, ending of game is dependent on one of states;
 - E[event] is conditional on first or previous outcome
 - cost of current step: 1
