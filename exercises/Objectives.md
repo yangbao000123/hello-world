@@ -54,7 +54,7 @@
     - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
 - explore-and-exploit
     - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
-    - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$
+    - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$ where $V_k$ denotes the number of remaining draws left to be drawn
     - CORRECTION: value of next draw has lower bound as $V_{k-1}$ to describe keep drawing if $X_k \geq V_{k-1}$ instead of $V_k$ where it includes current kth draw value
 - number of states, ending of game is dependent on one of states;
 - E[event] is conditional on first or previous outcome
