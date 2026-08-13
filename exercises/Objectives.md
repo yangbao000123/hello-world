@@ -64,6 +64,8 @@
     - E[rolling out same face value and end]
     - E[seated with no-adjacent rule]
     - E[steps to cover all edges of a triangle]
+    - E[jumps to cover vertices of a triangle by 3 frogs]
+        -   three frogs are not treated uniformly as ants that blend with each other due to different prob. to each vertex
     - stop game when reach repetitive value {1, 2, 3, 1, 2, 3}
         - expected payout given last-roll result
         - earnings at each round
