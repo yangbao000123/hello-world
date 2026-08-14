@@ -33,7 +33,7 @@
     - to roll three rounds, $E[V_{Current}] \geq E[V_{Next}]$
     - apply flooring, $E_{Next}$, to face values at each roll
         - $E_{Third} = E_{Last} = 3.5$
-        - $E_{Second}$ to capture expected payout given 2nd round succeeds #E_{Third}$ and same applies to $E_{First}$
+        - $E_{Second}$ to capture expected payout given 2nd round succeeds $E_{Third}$ and same applies to $E_{First}$
 - non-divider occasions between divider, divider and occasion prior to first divider
     - strict divider given 2 is before A, soft divider: E[cards after first 2 and before first A]
 - passengers with one lost ticket to seat uniformly random
@@ -47,15 +47,10 @@
     - first audience seating situation + all rest audience
     - $1 + \sum_{i=1}^{n} max(0,left seatings) + max(0,rightseatings) = 1 + \frac{2}{n}$ * $\sum_{i}^{n-2} f(i)$
 
-  
 ### Recursion, recurrence at uniformly random probabilities; OST
 - absorbing state at 0 and N, $E_0 = E_N = 0$
     - Exit time of a random walk
     - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
-- explore-and-exploit
-    - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
-    - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$ where $V_k$ denotes the number of remaining draws left to be drawn
-    - CORRECTION: value of next draw has lower bound as $V_{k-1}$ to describe keep drawing if $X_k \geq V_{k-1}$ instead of $V_k$ where it includes current kth draw value
 - number of states, ending of game is dependent on one of states;
 - E[event] is conditional on first or previous outcome
 - cost of current step: 1
@@ -87,7 +82,11 @@
       
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
-- stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
+- previous-and-current draw, **one** switch
+    - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
+    - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$ where $V_k$ denotes the number of remaining draws left to be drawn
+    - CORRECTION: value of next draw has lower bound as $V_{k-1}$ to describe keep drawing if $X_k \geq V_{k-1}$ instead of $V_k$ where it includes current kth draw value
+    - stop and collect $x_t$ or reach $x_n$ and forced to take $x_n$
     - stopping cutoff, $max (x_t, V_{t+1})$
     - $E[max(x_t, V_{t+1})] = \int_{0}^{V_{t+1}} V_{t+1} + \int_{V_{t+1}}^{1} x dx$      ~ Bellman Equation
 - with two fair dices, when both dices don't roll out 1, accumulate face value to running total; if either dice rolls a 1, the game stops and lose the sum.
