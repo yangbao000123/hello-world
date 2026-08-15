@@ -146,7 +146,7 @@ class momentum:
             value_name='signal'         
             )
         
-        return_align = self.return_data.shift(-1)
+        return_align = self.return_data.shift(-1).reindex(momentum_signal.index)
         flattened['return_aligned'] = return_align.reset_index().melt(id_vars='Date', var_name='ticker', value_name='return_aligned')['return_aligned']
         
         flattened['decile'] = flattened.groupby('Date')['signal'].transform( 
@@ -159,7 +159,8 @@ class momentum:
         bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mean()
         
         long_short = top-bottom
-        
+        print("Signal dates:", momentum_signal.index.min(), momentum_signal.index.max(), len(momentum_signal))
+        print("Return align dates:", return_align.index.min(), return_align.index.max(), len(return_align))
         return long_short, flattened
     
     
@@ -175,15 +176,14 @@ class momentum:
         return return_vol_target
     
     
-    def performance_evaluation(self, VaR_threshold=0.5):
+    def performance_evaluation(self, strategy, VaR_threshold=0.5):
         
         '''
         Sharpe ratio, max drawdown, annualised return, turnover
         VaR and Expected Shortfall
         Plot cumulative returns, drawdown chart, rolling Sharpe
         '''
-        strategy, with_signal = self.backtest_momentum()
-
+        
         cumulative = (1+strategy).cumprod() # if log return, cumsum then exp?
         sharpe = strategy.mean()/strategy.std() * np.sqrt(12)
         mdd =  (cumulative/cumulative.cummax()-1).min()
@@ -204,5 +204,8 @@ if __name__ == '__main__':
     #momentum = momentum(start, end, url)  
     #momentum_signal = momentum.generate_signal()
     #long_short, with_signal = momentum.backtest_momentum()
-    #metrics, cumulative = momentum.performance_evaluation()
+    #strategy, with_signal = momentum.backtest_momentum()
+    #strategy_vol_target = momentum.volatility_targeting()
+
+    #metrics, cumulative = momentum.performance_evaluation(strategy_vol_target, VaR_threshold=0.5)
     

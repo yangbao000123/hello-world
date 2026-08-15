@@ -16,13 +16,17 @@ end='2026-07-30'
 
 momentum = momentum(start, end, url)  
 momentum_signal = momentum.generate_signal()
-long_short, with_signal = momentum.backtest_momentum()
-metrics, cumulative = momentum.performance_evaluation()
+#long_short, with_signal = momentum.backtest_momentum()
+strategy, with_signal = momentum.backtest_momentum()
+strategy_vol_target = momentum.volatility_targeting()
+
+metrics, cumulative = momentum.performance_evaluation(strategy_vol_target, VaR_threshold=.5)
 sharpe = metrics['Sharpe Ratio'].values
 
-# Plotting
+# Visualisation
 rolling_period = 6
-rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
+rolling_sharpe = strategy_vol_target.rolling(rolling_period).mean() \
+                /strategy_vol_target.rolling(rolling_period).std() * np.sqrt(12)
 
 fig, ax1 = plt.subplots()
 ax1.set_xlabel('Timestamp')
