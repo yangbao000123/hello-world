@@ -160,12 +160,12 @@ class momentum:
         
         long_short = top-bottom
         
-        return long_short
+        return long_short, flattened
     
     
     def volatility_targeting(self):    
         
-        strategy = self.backtest_momentum()
+        strategy, with_signal = self.backtest_momentum()
         # volatility targeting by adjusting execution trade size
         vol_target = 0.2
         vol_trailng = strategy.rolling(6).std().shift(1)*(12**0.5)
@@ -182,15 +182,16 @@ class momentum:
         VaR and Expected Shortfall
         Plot cumulative returns, drawdown chart, rolling Sharpe
         '''
-        strategy = self.backtest_momentum()
+        strategy, with_signal = self.backtest_momentum()
 
-        metrics = pd.DataFrame(columns=['Sharpe Ratio', 'Maximum Drawdown', 'VaR', 'Shortfall'])
         cumulative = (1+strategy).cumprod() # if log return, cumsum then exp?
-        metrics['Sharpe Ratio'] = sharpe = strategy.mean()/strategy.std() * np.sqrt(12)
-
-        metrics['Maximum Drawdown'] = mdd =  (cumulative/cumulative.cummax()-1).min()
-        metrics['VaR'] = VaR = strategy.quantile(VaR_threshold)
-        metrics['Shortfall'] = shortfall = strategy[strategy<=VaR].mean()
+        sharpe = strategy.mean()/strategy.std() * np.sqrt(12)
+        mdd =  (cumulative/cumulative.cummax()-1).min()
+        VaR = strategy.quantile(VaR_threshold)
+        shortfall = strategy[strategy<=VaR].mean()
+        metrics = pd.DataFrame(data=[[sharpe, mdd, VaR, shortfall]], 
+                               columns=['Sharpe Ratio', 'Maximum Drawdown', 'VaR', 'Shortfall'])
+        
         return metrics, cumulative
     
     
@@ -200,36 +201,8 @@ if __name__ == '__main__':
     start='2023-01-01'
     end='2026-07-30'
 
-    momentum = momentum(start, end, url)  
-    momentum_signal = momentum.generate_signal()
-    #%%
-    long_short = momentum.backtest_momentum()
-    metrics, cumulative = momentum.performance_evaluation()
-    sharpe = metrics['Sharpe Ratio']
-    
-    # Plotting
-    rolling_period = 6
-    rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
-    
-    fig, ax1 = plt.subplots()
-    ax1.set_xlabel('Timestamp')
-    ax1.set_ylabel('Cumulative Return', color='lightpink')
-    ax1.plot(rolling_sharpe.index, cumulative, color='lightpink', linewidth=1.2)
-    ax1.tick_params(axis='y', labelcolor='lightpink')
-    ax1.tick_params(axis='x', rotation=45)
-    ax1.legend(['Cumulative Return'], loc='upper left')
-    
-    ax2 = ax1.twinx()
-    ax2.set_ylabel('Rolling Sharpe', color='lightseagreen')
-    ax2.axhline(sharpe, color='lightseagreen', linestyle='--', alpha=0.5)
-    ax2.plot(rolling_sharpe.index, rolling_sharpe, color='lightseagreen', linewidth=1.2)
-    ax2.tick_params(axis='y', labelcolor='lightseagreen')
-    ax2.tick_params(axis='x', rotation=45)
-    ax2.legend(['Rolling Sharpe'], loc='upper right')
-    
-    
-    fig.tight_layout()
-    plt.title('W minus L Performance')
-    plt.show()
-    
+    #momentum = momentum(start, end, url)  
+    #momentum_signal = momentum.generate_signal()
+    #long_short, with_signal = momentum.backtest_momentum()
+    #metrics, cumulative = momentum.performance_evaluation()
     
