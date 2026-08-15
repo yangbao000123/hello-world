@@ -16,7 +16,6 @@ Vectorized backtest engine
 - volatility targeting
 - covariance shrinkage on weights and Markowitz mean-variance optimizer
 
-
 Performance metrics
 Sharpe ratio, max drawdown, annualised return, turnover
 VaR, Expected Shortfall
@@ -42,116 +41,195 @@ Survivorship bias
     - neglection of historical index rebalance 
 Compute daily returns and resampled to monthly cadence return
 '''
-url = 'https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv'
-sp500 = pd.read_csv(url)
-tickers = sp500['Symbol'].tolist()
-data = yh.download(tickers, start='2023-01-01', end='2026-07-30') #only has 'Close' price
-close = data['Adj Close']
 
-'''3 Failed downloads:
-['BRK.B']: possibly delisted; no timezone found
-['BF.B', 'BAX']: possibly delisted; no price data found  (1d 2022-01-01 -> 2026-07-30)'''
+class momentum:
+    
+    def __init__(self, start, end, s5_url):
+        
+        self.start = start
+        self.end = end
+        self.s5_url = s5_url
+        self.price_data = self.get_constituent_price()
+        self.return_data = self.price_to_return()
+        
+        
+    def get_constituent_price(self):
+        
+        '''
+        3 Failed downloads:
+        ['BRK.B']: possibly delisted; no timezone found
+        ['BF.B', 'BAX']: possibly delisted; no price data found  (1d 2022-01-01 -> 2026-07-30)
+        '''
+        sp500 = pd.read_csv(self.s5_url)
+        tickers = sp500['Symbol'].tolist()
+        print(tickers)
+        data = yh.download(tickers, start=self.start, end=self.end) #only has 'Close' price
+        return data
+    
+    
+    def preliminary_check(self):
+        
+        price_data = self.price_data
+        price_data['Close'].isna().sum()
+    
+    
+    def price_to_return(self):
+        
+        '''
+        Return frequency in monthly cadence
+        '''
+        price_data = self.price_data
 
-data['Close'].isna().sum()
+        price_monthly = price_data['Close'].resample('ME').last()
+        return_monthly = price_monthly.pct_change()
 
-price_monthly = data['Close'].resample('ME').last()
-return_monthl = price_monthly.pct_change()
+        return return_monthly
+    
+    
+    def generate_signal(self):
+        
+        '''
+        Momentum signal for month t: growth from t-12 to t-1
+        
+        by nature of month-end return, 
+        it means for portfolio simulation, position is entered at next-month beginning timestamp; 
+        next-month return is to be earned/logged for performance that corresponds with current-month position entered, 
+        assuming an enter-and-hold for monthly balance
+        '''
+        return_monthly = self.return_data.iloc[1:,:]
+        total_return_idx = (1 + return_monthly).cumprod() # why momentum factor from cumulative return 
+        momentum_signal = (total_return_idx.shift(1) / total_return_idx.shift(12)) - 1
+        
+        return momentum_signal
+    
+    
+    def generate_signal_alt1(self):
+        
+        '''
+        Alternative apporach to produce momentum signal
+        '''
+        price = self.price_data['Close'].resample('ME').last()
+        momentum_signal = price.shift(1).diff(11)/price.shift(12)
+        
+        return momentum_signal
+    
+    
+    def generate_signal_alt2(self):
+        
+        momentum_signal = (1+self.return_data).rolling(window=11).apply(np.prod, raw=True) - 1
+        momentum_signal = momentum_signal.shift(1) # at t, the signal is of window t-1 to t-11
+        
+        return momentum_signal
+    
+    
+    def backtest_momentum(self):    
+        
+        '''
+        Vectorized backtest engine
+        
+        daily rebalancing, quintile portfolios, long-short returns.
+        each month, rank tickers by momentum signal to find winner and loser, compute monthly W-L return
+        
+        Pandas syntax
+        df.reset_index().melet(): columns aggregated to single df column after groupby
+        df.groupby(index)[column].transform(lambda func)
+            - transform adds qcut result to a column with the same index in flattened
+            - new column to host ticker's momentum signal score
+            - benefit over df.groupby(index)[column].apply(lambda func())
+                - applied = flattened.groupby('Date')['signal'].apply(lambda x: pd.qcut(x, 2, labels=False, duplicates='drop'))
+                - reduction of index handling after producing quantiles
+        '''
+        momentum_signal = self.generate_signal()
+        flattened = momentum_signal.reset_index().melt(
+            id_vars='Date', 
+            var_name='ticker',          
+            value_name='signal'         
+            )
+        
+        return_align = self.return_data.shift(-1)
+        flattened['return_aligned'] = return_align.reset_index().melt(id_vars='Date', var_name='ticker', value_name='return_aligned')['return_aligned']
+        
+        flattened['decile'] = flattened.groupby('Date')['signal'].transform( 
+                                                        lambda x:pd.qcut(x,
+                                                                         10, #10 quantiles
+                                                                         labels=False, 
+                                                                         duplicates='drop') )
+        
+        top = flattened[flattened['decile']==9].groupby('Date')['return_aligned'].mean()
+        bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mean()
+        
+        long_short = top-bottom
+        
+        return long_short
+    
+    
+    def volatility_targeting(self):    
+        
+        strategy = self.backtest_momentum()
+        # volatility targeting by adjusting execution trade size
+        vol_target = 0.2
+        vol_trailng = strategy.rolling(6).std().shift(1)*(12**0.5)
+        vol_scalar = vol_target/vol_trailng
+        return_vol_target = strategy*vol_scalar
+        
+        return return_vol_target
+    
+    
+    def performance_evaluation(self, VaR_threshold=0.5):
+        
+        '''
+        Sharpe ratio, max drawdown, annualised return, turnover
+        VaR and Expected Shortfall
+        Plot cumulative returns, drawdown chart, rolling Sharpe
+        '''
+        strategy = self.backtest_momentum()
 
-# Momentum signal for month t: growth from t-12 to t-1
-'''
-by nature of month-end return, 
-it means for portfolio simulation, position is entered at next-month beginning timestamp; 
-next-month return is to be earned/logged for performance that corresponds with current-month position entered, 
-assuming an enter-and-hold for monthly balance
-'''
-total_return_idx = (1 + return_monthl).cumprod()
-momentum_signal = (total_return_idx.shift(1) / total_return_idx.shift(12)) - 1
+        metrics = pd.DataFrame(columns=['Sharpe Ratio', 'Maximum Drawdown', 'VaR', 'Shortfall'])
+        cumulative = (1+strategy).cumprod() # if log return, cumsum then exp?
+        metrics['Sharpe Ratio'] = sharpe = strategy.mean()/strategy.std() * np.sqrt(12)
 
-# Alternative apporach to produce momentum signal
-price = data['Close'].resample('ME').last()
-momen = price.shift(1).diff(11)/price.shift(12)
-#
-momentum_sgnl = (1+return_monthl).rolling(window=11).apply(np.prod, raw=True) - 1
-momentum_sgnl = momentum_sgnl.shift(1) # at t, the signal is of window t-1 to t-11
+        metrics['Maximum Drawdown'] = mdd =  (cumulative/cumulative.cummax()-1).min()
+        metrics['VaR'] = VaR = strategy.quantile(VaR_threshold)
+        metrics['Shortfall'] = shortfall = strategy[strategy<=VaR].mean()
+        return metrics, cumulative
+    
+    
+if __name__ == '__main__':
+    
+    url = 'https://raw.githubusercontent.com/datasets/s-and-p-500-companies/master/data/constituents.csv'
+    start='2023-01-01'
+    end='2026-07-30'
 
-# Vectorized backtest engine
-'''
-daily rebalancing, quintile portfolios, long-short returns.
-each month, rank tickers by momentum signal to find winner and loser, compute monthly W-L return
-
-Pandas syntax
-df.reset_index().melet(): columns aggregated to single df column after groupby
-df.groupby(index)[column].transform(lambda func)
-    - transform adds qcut result to a column with the same index in flattened
-    - new column to host ticker's momentum signal score
-    - benefit over df.groupby(index)[column].apply(lambda func())
-        - applied = flattened.groupby('Date')['signal'].apply(lambda x: pd.qcut(x, 2, labels=False, duplicates='drop'))
-        - reduction of index handling after producing quantiles
-                                                   
-'''
-
-flattened = momentum_sgnl.reset_index().melt(
-    id_vars='Date', 
-    var_name='ticker',          
-    value_name='signal'         
-    )
-return_align = return_monthl.shift(-1)
-flattened['return_aligned'] = return_align.reset_index().melt(id_vars='Date', var_name='ticker', value_name='return_aligned')['return_aligned']
-
-flattened['decile'] = flattened.groupby('Date')['signal'].transform( 
-                                                lambda x:pd.qcut(x,
-                                                                 10, #10 quantiles
-                                                                 labels=False, 
-                                                                 duplicates='drop') )
-
-top = flattened[flattened['decile']==9].groupby('Date')['return_aligned'].mean()
-bottom = flattened[flattened['decile']==0].groupby('Date')['return_aligned'].mean()
-
-long_short = top-bottom
-
-# volatility targeting by adjusting execution trade size
-vol_target = 0.2
-vol_trailn = long_short.rolling(6).std().shift(1)*(12**0.5)
-vol_scalar = vol_target/vol_trailn
-return_vol = long_short*vol_scalar
-
-# Performance metrics
-'''
-Sharpe ratio, max drawdown, annualised return, turnover
-VaR and Expected Shortfall
-Plot cumulative returns, drawdown chart, rolling Sharpe
-'''
-sharpe = long_short.mean()/long_short.std() * np.sqrt(12)
-cumulative = (1+long_short).cumprod() # if log return, cumsum then exp?
-max_dd = (cumulative/cumulative.cummax()-1).min()
-
-VaR = long_short.quantile(0.5)
-shortfall = long_short[long_short<=VaR].mean()
-
-
-# Plotting
-rolling_period = 6
-rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
-
-fig, ax1 = plt.subplots()
-ax1.set_xlabel('Timestamp')
-ax1.set_ylabel('Cumulative Return', color='lightpink')
-ax1.plot(rolling_sharpe.index, cumulative, color='lightpink', linewidth=1.2)
-ax1.tick_params(axis='y', labelcolor='lightpink')
-ax1.tick_params(axis='x', rotation=45)
-ax1.legend(['Cumulative Return'], loc='upper left')
-
-ax2 = ax1.twinx()
-ax2.set_ylabel('Rolling Sharpe', color='lightseagreen')
-ax2.axhline(sharpe, color='lightseagreen', linestyle='--', alpha=0.5)
-ax2.plot(rolling_sharpe.index, rolling_sharpe, color='lightseagreen', linewidth=1.2)
-ax2.tick_params(axis='y', labelcolor='lightseagreen')
-ax2.tick_params(axis='x', rotation=45)
-ax2.legend(['Rolling Sharpe'], loc='upper right')
-
-
-fig.tight_layout()
-plt.title('W minus L Performance')
-plt.show()
-
-
+    momentum = momentum(start, end, url)  
+    momentum_signal = momentum.generate_signal()
+    #%%
+    long_short = momentum.backtest_momentum()
+    metrics, cumulative = momentum.performance_evaluation()
+    sharpe = metrics['Sharpe Ratio']
+    
+    # Plotting
+    rolling_period = 6
+    rolling_sharpe = long_short.rolling(rolling_period).mean()/long_short.rolling(rolling_period).std() * np.sqrt(12)
+    
+    fig, ax1 = plt.subplots()
+    ax1.set_xlabel('Timestamp')
+    ax1.set_ylabel('Cumulative Return', color='lightpink')
+    ax1.plot(rolling_sharpe.index, cumulative, color='lightpink', linewidth=1.2)
+    ax1.tick_params(axis='y', labelcolor='lightpink')
+    ax1.tick_params(axis='x', rotation=45)
+    ax1.legend(['Cumulative Return'], loc='upper left')
+    
+    ax2 = ax1.twinx()
+    ax2.set_ylabel('Rolling Sharpe', color='lightseagreen')
+    ax2.axhline(sharpe, color='lightseagreen', linestyle='--', alpha=0.5)
+    ax2.plot(rolling_sharpe.index, rolling_sharpe, color='lightseagreen', linewidth=1.2)
+    ax2.tick_params(axis='y', labelcolor='lightseagreen')
+    ax2.tick_params(axis='x', rotation=45)
+    ax2.legend(['Rolling Sharpe'], loc='upper right')
+    
+    
+    fig.tight_layout()
+    plt.title('W minus L Performance')
+    plt.show()
+    
+    
