@@ -58,18 +58,21 @@ sharpe_vol = metrics_vol['Sharpe Ratio'].values
 visualise_performance(strategy_vol_target, cumulative_vol, sharpe_vol, 'with volatility targeting')
 visualise_performance(strategy_plain, cumulative_plain, sharpe_plain, 'in plain')
 
-
-# June 2026
+#%%
+# Ledoit Wolf shrinkage, June 2026
 June2026 = momentum.return_data.loc['2026-06-30',:]
 daily_return = momentum.price_data['Close'].pct_change().replace(np.nan, 0)
+ticker_top = with_signal[(with_signal['Date'] == '2026-06-30') & (with_signal['decile'] == 9)]['ticker']
+return_top = daily_return.loc['2025-07-01':'2026-06-30', ticker_top].dropna(how='all')
 
 lw = LedoitWolf()
-lw.fit(June2026)
-shrunk = lw.covariance_
+lw.fit(return_top)
+shrinkage = lw.covariance_
 
-inverse = np.linalg.inv(shrunk)
+cov_inve = np.linalg.inv(shrinkage)
+ones= np.ones(len(cov_inve))
+weights = cov_inve @ ones / (ones @ cov_inve @ ones)
 
-'''
-var_equal = (1/len(weights_mv))**2 * np.sum(shrunk_cov)
-var_mv = weights_mv @ shrunk_cov @ weights_mv
-'''
+var_equal = (1/len(weights))**2 * np.sum(shrinkage)
+var_mv = weights @ shrinkage @ weights
+print(var_equal, var_mv)
