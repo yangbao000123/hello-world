@@ -28,19 +28,10 @@ Journal of Portfolio Management, Fall 2014 (40th Anniversary Issue),
 Available at SSRN: https://ssrn.com/abstract=2435323 or http://dx.doi.org/10.2139/ssrn.2435323
 """
 
-import requests
+#import requests
 import numpy as np
 import pandas as pd
 import yfinance as yh 
-import matplotlib.pyplot as plt
-# Gather constituents and calcuate return
-'''
-S&P 500 constituent-daily price from yahoo finance; 
-Survivorship bias
-    - collection of constituents as of 07/31/2026 where it contains survived constituents only
-    - neglection of historical index rebalance 
-Compute daily returns and resampled to monthly cadence return
-'''
 
 class momentum:
     
@@ -56,6 +47,12 @@ class momentum:
     def get_constituent_price(self):
         
         '''
+        S&P 500 constituent-daily price from yahoo finance; 
+        Survivorship bias
+            - collection of constituents as of 07/31/2026 where it contains survived constituents only
+            - neglection of historical index rebalance 
+        Compute daily returns and resampled to monthly cadence return
+       
         3 Failed downloads:
         ['BRK.B']: possibly delisted; no timezone found
         ['BF.B', 'BAX']: possibly delisted; no price data found  (1d 2022-01-01 -> 2026-07-30)
