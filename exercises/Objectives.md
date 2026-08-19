@@ -9,6 +9,7 @@
 ## Exercise
 
 ### Uniformly random i.i.d. particles, linearity of expectation
+-  marginal probability, unconditional probability 
 -  uniformly random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
         - independent inclusion/exclusion of $x_i$ contribution to subset sum value
