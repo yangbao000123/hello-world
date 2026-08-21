@@ -1,7 +1,9 @@
-# To be Described, supporting functionality of one topics to another 
+## To be Described
+- supporting functionality of one topics to another
+- alignment and differentiation among topics
 
-## recurrence, absorbing state
+### recurrence, absorbing state
 
-## independence, uniformly random 
+### independence, uniformly random 
 
-## 
+###
