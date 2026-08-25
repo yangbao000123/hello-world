@@ -10,7 +10,8 @@
 
 ### Uniformly random i.i.d. particles, linearity of expectation
 -  marginal probability; unconditional probability corresponds smaller sample space and layered filter
-    - same probability of being chosen regardless of placement 
+    - same probability of being chosen regardless of placement
+    - Wald’s equation and stopping time, where the stopping depends on past occurrence not future ones 
 -  uniformly random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
         - independent inclusion/exclusion of $x_i$ contribution to subset sum value
