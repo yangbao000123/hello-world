@@ -54,7 +54,7 @@
 - absorbing state at 0 and N, $E_0 = E_N = 0$
     - Exit time of a random walk
     - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
-- number of states, ending of game is dependent on one of states;
+- sequence of H or T, to compare probability, observe prefix and redundant prefix situations to reach P(H) and P(T)
 - E[event] is conditional on first or previous outcome
 - cost of current step: 1
 - additional step to reach a state given current state
@@ -85,6 +85,7 @@
       
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
+    - branches given number of head; geometric series for until a tail
 - previous-and-current draw, **one** switch
     - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
     - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$ where $V_k$ denotes the number of remaining draws left to be drawn
