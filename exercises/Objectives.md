@@ -90,6 +90,8 @@
 ### Optimal stopping; 
 - number of states, reaching absorbing state is the end of game
     - branches given number of head; geometric series for until a tail
+    - $max(V_{current}, V_{fresh})$
+         - $E[max(a,10)] = E[a] + E[(10-a)^+]$
 - previous-and-current draw, **one** switch
     - cut-off threshold to be $E[max(V_{k-1},X_k)]$ to describe values to drop and value of next draw
     - $\int_{0}^{V_{k-1}} V_{k-1}dx + \int_{V_{k-1}}^{1} xdx$ where $V_k$ denotes the number of remaining draws left to be drawn
