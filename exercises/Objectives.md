@@ -13,7 +13,8 @@
     - same probability of being chosen regardless of placement
     - Wald’s equation and stopping time
         - stopping depends on past occurrence not future ones;
-        - independence between number of rolls and number of face value is not required 
+        - independence between number of rolls and number of face value is not required because cancelled out by taking respective average dog number of rolls and face value
+        - $E[\sum_{i=1}^{6}$ face value appearing at least one $]$
         - E[sum of values until see a first 6]
 -  uniformly random -> independent events -> indicator variables -> linearity of expectation
     - subset and sum values of elements
