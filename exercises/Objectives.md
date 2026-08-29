@@ -60,7 +60,7 @@
     - $E_k = 1 + \frac{1}{2} E_{K-1} + \frac{1}{2} E_{k+1}$
 - sequence of H or T, to compare probability, observe prefix and redundant prefix situations to reach P(H) and P(T)
 - E[event] is conditional on first or previous outcome
-- cost of current step: 1
+- tracking next state by number of current results; cost of current step: 1
 - additional step to reach a state given current state
     - E[filps until both head and tail]
     - E[rolling out same face value and end]
