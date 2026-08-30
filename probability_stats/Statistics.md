@@ -1,2 +1,32 @@
+### Multi-variate Gaussians
+- expectations, $\mu=E[X]$
+-  Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
+
+
+- variance
+  - $Var(X) = E[(X - \mu)^2]$
+    -    $= E[X^2] - 2E[X E[X]] + E[E[X]^2]= E[X^2] - 2E[X]^2 + E[X]^2 = E[X^2] - E[X]^2 $
+  - $Var(X+Y)$
+    - X,Y dependent: $Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$ 
+    - X,Y independent: $Var(X+Y) = Var(X)+Var(Y)$ ~ $Cov(X,Y) = 0$
+  - $E[X^2] - E[X]^2 \geq 0$
+    - a. $f(x) = x^2$ with Jensen's inequality
+    - b. X to be constant
+      
+- covariance, correlation
+  - $Cov(X,Y) = E[(X-E[X])(Y-E[Y])]$
+    - X,Y dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y $ 
+    - X,Y independent: $Cov(X,Y) = 0$
+  - $Cov(X,X) = Var(X)$
+
+  - correlated: linear pattern between two variables
+
+- Gaussian Moment Generating Function
+
+  
 ### Statistical significance, power, effect size and hypothesis test
-- h0 and h1 true or false are mutually exclusive while the test can only reject or fail reject h0
+- $H_0$ and $H_1$ to be true or false are mutually exclusive while the test can only reject or fail reject $H_0$, then in support of $H_1$
+  - s. significance by design: reject $H_0$ given $H_0$ is true
+  - s. power, to be observed: reject $H_0$ given $H_1$ is true
+  - Type I error: reject $H_0$ given $H_0$ is true
+  - Type II error: fail to reject $H_0$ given $H_1$ is true
