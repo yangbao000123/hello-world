@@ -1,7 +1,7 @@
-### Multi-variate Gaussians
-- expectations, $\mu=E[X]$
+### Multivariate Gaussians
 -  Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
 
+- expectations, $\mu=E[X]$
 
 - variance
   - $Var(X) = E[(X - \mu)^2]$
