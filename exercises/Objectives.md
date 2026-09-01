@@ -33,6 +33,10 @@
         - $\max(x_1, x_2, ..., x_n); $
         - $E[M] = \int_{0}^{1} t*p(t)dt$ 
         - where p(t) defines probability density function
+### Conditional Probability
+- probability being dependent on previous outcome;
+- uniform distribution
+    - number of path compensates individual-path probability
 
 ### Choices available
 - expectation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
