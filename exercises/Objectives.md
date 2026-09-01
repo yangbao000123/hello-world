@@ -37,6 +37,7 @@
 - probability being dependent on previous outcome;
 - uniform distribution
     - number of path compensates individual-path probability
+- marginal probability, without replacement
 
 ### Choices available
 - expectation worked out in backwards for discerning forfeit cutoff with 3-roll opportunity
