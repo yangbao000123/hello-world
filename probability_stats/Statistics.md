@@ -1,4 +1,4 @@
-### Multivariate Gaussians
+### Statistical analysis
 -  Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
 
 - expectations, $\mu=E[X]$
@@ -23,10 +23,23 @@
 
 - Gaussian Moment Generating Function
 
-  
 ### Statistical significance, power, effect size and hypothesis test
 - $H_0$ and $H_1$ to be true or false are mutually exclusive while the test can only reject or fail reject $H_0$, then in support of $H_1$
   - s. significance by design: reject $H_0$ given $H_0$ is true
   - s. power, to be observed: reject $H_0$ given $H_1$ is true
   - Type I error: reject $H_0$ given $H_0$ is true
   - Type II error: fail to reject $H_0$ given $H_1$ is true
+
+### OLS assumptions, multicollinearity, error measurement and duplicative observations
+
+- BLUE
+- Multicollinearity
+- Measurement error
+  - TRUE model: $y = \beta X_{true}^* + \epsilon$ and OBSERVE $X = X_{true}^* + \mu$
+     - regressor, contaminated X variable: $X = X_{true}^* + \mu$ where $\mu$ the measurement error is independent of $X, X_{true}^*$
+ 
+
+
+
+
+
