@@ -116,7 +116,7 @@
         - where $E[h_{payout} * (N-1)]$ measures a fresh-round payout since hasn't flipped a tail
         - as first-round turns to be Head, it's equivalent to start the game fresh
       
-### Tail-sum, volume of an n-dimensional simplex
+### Tail-sum, volume of an n-dimensional simplex; Survival function
 - number of occassions to exceed 1 is equivalent to aggregated number of occasions when it hasn't reached 1
 - because 1 hasn't been reached, the number of draws increases
     - let N = $\min {(n: U_1 + U_2 + ... + U_n > 1)}$
@@ -124,7 +124,7 @@
         - $\sum_{k=0}^{\inf} P(N\geq k) = \sum_{k=0}^{\inf} \frac{1}{n!} = e$ ~ Taylor's series expansion
         - P(N>0) = 1 ~ always needs the first draw
         - P(N>1) = 1 ~ in continuous distribution P(U=1)=0 for any pre-specified value draw, so needs a second draw
-
+- alternative to CPF, PDF, E[f]
 ### Number anlaysis
 - $e^\pi$ versus $\pi^e$, [source](https://math.stackexchange.com/questions/7892/comparing-pie-and-e-pi-without-calculating-themzz), [less equal](https://math.stackexchange.com/questions/504663/simplest-or-nicest-proof-that-1x-le-ex)
    - apply natual log to both sides and concavity of ln, $x-1 > ln x$ for x<>1
