@@ -38,10 +38,9 @@
   - TRUE model: $y = \beta X_{true}^* + \epsilon$ and OBSERVE $X = X_{true}^* + \mu$
      - regressor, contaminated X variable: $X = X_{true}^* + \mu$ where $\mu$ the measurement error is independent of $X, X_{true}^*$
      - having true model $y = \beta X^* + \epsilon$ and observe $X = X^* + \mu$, substituting $X^* = X-\mu$ into true model $y$, it has $y=\beta (X-\mu) + \epsilon = \beta X + \epsilon - \beta\mu$
-     - "If that composite error were just a constant or uncorrelated noise, OLS on $y$ against $X$ would work" meaning a. $-\beta \mu + \epsilon$ and $X$ has $cov(X,\mu_{composite})=Var(\mu_{composite}) \neq 0$, then $X$ and $\mu$ are correlated, which violates OLS assumption of uncorrelated regressor and error term
-
-
-b.OLS on y against with no need of reliability ratio? 
+     - "If that composite error were just a constant or uncorrelated noise, OLS on $y$ against $X$ would work" meaning
+        - a. $-\beta \mu + \epsilon$ and $X$ has $cov(X,\mu_{composite})=Var(\mu_{composite}) \neq 0$, then $X$ and $\mu$ are correlated, which violates OLS assumption of uncorrelated regressor and error term
+        - b.OLS on y against with no need of reliability ratio? 
 
 
 
