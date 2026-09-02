@@ -10,7 +10,7 @@
 
 ### Uniformly random i.i.d. particles, linearity of expectation
 -  marginal probability; unconditional probability corresponds smaller sample space and layered filter
-    - same probability of being chosen regardless of placement
+    - same probability of being chosen regardless of placement, without replacement
     - Wald’s equation and stopping time
         - stopping depends on past occurrence not future ones;
         - independence between number of rolls and number of face value is not required because cancelled out by taking respective average dog number of rolls and face value
