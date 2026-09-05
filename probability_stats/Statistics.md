@@ -43,7 +43,7 @@
         - b.OLS on y against with no need of reliability ratio?
 
 ### Effect on OLS $\beta$ and $R^2$
-- invariate $R^2$, scaling, shifting and adding perfect-collinear X regressor
+- invariant $R^2$, scaling, shifting and adding perfect-collinear X regressor
 
 
 
