@@ -42,8 +42,14 @@
         - a. $-\beta \mu + \epsilon$ and $X$ has $cov(X,\mu_{composite})=Var(\mu_{composite}) \neq 0$, then $X$ and $\mu$ are correlated, which violates OLS assumption of uncorrelated regressor and error term
         - b.OLS on y against with no need of reliability ratio?
 
-### Effect on OLS $\beta$ and $R^2$
-- invariant $R^2$, scaling, shifting and adding perfect-collinear X regressor
+### Effect of modified variables, on $\beta$ and $R^2$
+- Existing regressors
+  - scaling or shifting X variable
+- Additional regressors
+  - perfect-collinear X variable, linear combination
+      - redundant information, $x_3 = x_1 + 2, x_3 = x_1 * 3$
+      - $x_3$ appears in column space of $x_1, x_2$
+  - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
 
 
 
