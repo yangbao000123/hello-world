@@ -1,11 +1,10 @@
 ### Statistical analysis
--  Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
+- Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
 
 - expectations, $\mu=E[X]$
 
 - variance
-  - $Var(X) = E[(X - \mu)^2]$
-    -    $= E[X^2] - 2E[X E[X]] + E[E[X]^2]= E[X^2] - 2E[X]^2 + E[X]^2 = E[X^2] - E[X]^2 $
+  - $Var(X) = E[(X - \mu)^2] = E[X^2] - 2E[X E[X]] + E[E[X]^2]= E[X^2] - 2E[X]^2 + E[X]^2 = E[X^2] - E[X]^2 $
   - $Var(X+Y)$
     - $X,Y$ dependent: $Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$ 
     - $X,Y$ independent: $Var(X+Y) = Var(X)+Var(Y)$ ~ $Cov(X,Y) = 0$
@@ -18,7 +17,6 @@
     - $X,Y$ dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y$ 
     - $X,Y$ independent: $Cov(X,Y) = 0$
   - $Cov(X,X) = Var(X)$
-
   - correlated: linear pattern between two variables
 
 - Gaussian Moment Generating Function
@@ -31,9 +29,9 @@
   - Type II error: fail to reject $H_0$ given $H_1$ is true
 
 ### OLS assumptions, multicollinearity, error measurement and duplicative observations
-
 - BLUE
 - Multicollinearity
+  - potentially high standard errors of individual coefficient 
 - Measurement error
   - TRUE model: $y = \beta X_{true}^* + \epsilon$ and OBSERVE $X = X_{true}^* + \mu$
      - regressor, contaminated X variable: $X = X_{true}^* + \mu$ where $\mu$ the measurement error is independent of $X, X_{true}^*$
@@ -49,7 +47,8 @@
   - perfect-collinear $X$ variable, linear combination
       - redundant information, $x_3 = x_1 + 2, x_3 = x_1 * 3$
       - $x_3$ appears in column space of $x_1, x_2$
-  - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
+  - partial-collinearity, multiplicative variable
+      - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
 
 
 
