@@ -7,16 +7,16 @@
   - $Var(X) = E[(X - \mu)^2]$
     -    $= E[X^2] - 2E[X E[X]] + E[E[X]^2]= E[X^2] - 2E[X]^2 + E[X]^2 = E[X^2] - E[X]^2 $
   - $Var(X+Y)$
-    - X,Y dependent: $Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$ 
-    - X,Y independent: $Var(X+Y) = Var(X)+Var(Y)$ ~ $Cov(X,Y) = 0$
+    - $X,Y$ dependent: $Var(X+Y) = Var(X) + Var(Y) + 2Cov(X,Y)$ 
+    - $X,Y$ independent: $Var(X+Y) = Var(X)+Var(Y)$ ~ $Cov(X,Y) = 0$
   - $E[X^2] - E[X]^2 \geq 0$
     - a. $f(x) = x^2$ with Jensen's inequality
-    - b. X to be constant
+    - b. $X$ to be constant
       
 - covariance, correlation
   - $Cov(X,Y) = E[(X-E[X])(Y-E[Y])]$
-    - X,Y dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y $ 
-    - X,Y independent: $Cov(X,Y) = 0$
+    - $X,Y$ dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y$ 
+    - $X,Y$ independent: $Cov(X,Y) = 0$
   - $Cov(X,X) = Var(X)$
 
   - correlated: linear pattern between two variables
@@ -44,9 +44,9 @@
 
 ### Effect of modified variables, on $\beta$ and $R^2$
 - Existing regressors
-  - scaling or shifting X variable
+  - scaling or shifting $X$ variable
 - Additional regressors
-  - perfect-collinear X variable, linear combination
+  - perfect-collinear $X$ variable, linear combination
       - redundant information, $x_3 = x_1 + 2, x_3 = x_1 * 3$
       - $x_3$ appears in column space of $x_1, x_2$
   - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
