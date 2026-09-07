@@ -49,6 +49,10 @@
       - $x_3$ appears in column space of $x_1, x_2$
   - partial-collinearity, multiplicative variable
       - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
+   
+### Minimum of one and multiple distributions
+- for X and Y to be on the right of threshold a, this describes min(X,Y), because for "a" is the minimum threshold, X or Y that is the closer number to this threshold is the minimum;
+- a confusion was seeing P(X>a and Y>a) as complementary of minimum and the confusion was from not interpreting "a" as a threshold
 
 
 
