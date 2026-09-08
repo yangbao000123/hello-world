@@ -28,6 +28,7 @@
   - s. power, to be observed: reject $H_0$ given $H_1$ is true
   - Type I error: reject $H_0$ given $H_0$ is true
   - Type II error: fail to reject $H_0$ given $H_1$ is true
+- test score and p-value 
 
 ### OLS assumptions, multicollinearity, error measurement and duplicative observations
 - BLUE
