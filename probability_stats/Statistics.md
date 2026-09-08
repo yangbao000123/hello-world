@@ -13,12 +13,13 @@
     - b. $X$ to be constant
       
 - covariance, correlation
+  - $Cov(X,Y) = E[XY]-E[X]E[Y]$ 
   - $Cov(X,Y) = E[(X-E[X])(Y-E[Y])]$
     - $X,Y$ dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y$ 
     - $X,Y$ independent: $Cov(X,Y) = 0$
   - $Cov(X,X) = Var(X)$
   - correlated: linear pattern between two variables
-
+  - 0 covariance does not imply independence
 - Gaussian Moment Generating Function
 
 ### Statistical significance, power, effect size and hypothesis test
