@@ -50,9 +50,14 @@
   - partial-collinearity, multiplicative variable
       - newly interactive term, $x_3 = x_1 * x_2$, expands column space of $x_1, x_2$
    
-### Minimum of one and multiple distributions
-- for X and Y to be on the right of threshold a, this describes min(X,Y), because for "a" is the minimum threshold, X or Y that is the closer number to this threshold is the minimum;
-- a confusion was seeing P(X>a and Y>a) as complementary of minimum and the confusion was from not interpreting "a" as a threshold
+### Maximum and minimum of one and multiple distributions
+- $E[max(X,Y)]=\int_0^1(2t*tdt)$ where t is the comparative threshold
+  - CDF $P(X \leq t)=t=P(Y \leq t)$, $max(X,Y)=P(X \leq t)P(Y \leq t)=t^2$ ~ Unif[0,1]
+  - PDF of $max(X,Y)=2t$
+  - survival function, $E[P(X \leq t)P(Y \leq t)]=\int_0^{\inf} 1-t^2 dt$
+- $E[min(X,Y)]=E[P(X\geq t)P(Y\geq t)]$
+  - $P(X \geq t) = 1-P(X \leq t) = 1- \frac{x-a}{b+a} = \frac{b-x}{b+a}$
+  - survival function, $E[P(X \geq t)P(Y \geq t)] = \int_0^{\inf} \frac{b_x-t}{b_x+a_x} \frac{b_y-t}{b_y+a_y} dt$
 
 
 
