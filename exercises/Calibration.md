@@ -6,4 +6,6 @@
 
 ### independence, uniformly random 
 
-###
+### marginal probability and linearity of expectation
+
+### uniform, binomial and geometric distribution
