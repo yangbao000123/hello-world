@@ -1,5 +1,6 @@
 # Distributions
 Core distributions, inter-relationships, considerations and implications
+### Uniform Distribution
 
 ### Normal/Gaussian Distribution
 
