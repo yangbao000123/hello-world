@@ -21,6 +21,11 @@
   - correlated: linear pattern between two variables
   - 0 covariance does not imply independence
 - Gaussian Moment Generating Function
+- Conditional Bivariate Normal Distribution,
+  - random normal variable $Z=\frac{X_z - \mu_z}{\sigma}$
+  - marginal probability $f_Z(z)=\frac{1}{\sigma \sqrt{2 \pi}} exp(-\frac{(X_z-\mu_z)^2}{2\sigma^2})$
+  - joint density $f(y,z)$, condition on $Z=z, f(y,z|Z=z)=\frac{f(y,z)}{f_Z(z)}$ 
+  - correlation matrix determinant $(1-\rho^2)$ 
 
 ### Statistical significance, power, effect size and hypothesis test
 - $H_0$ and $H_1$ to be true or false are mutually exclusive while the test can only reject or fail reject $H_0$, then in support of $H_1$
