@@ -12,15 +12,17 @@
     - a. $f(x) = x^2$ with Jensen's inequality
     - b. $X$ to be constant
       
-- covariance, correlation
+- covariance: linearity of variables, correlation
   - $Cov(X,Y) = E[XY]-E[X]E[Y]$ 
   - $Cov(X,Y) = E[(X-E[X])(Y-E[Y])]$
     - $X,Y$ dependent: $Cov(X,Y) = 2*corr(X,Y) * \sigma_X \sigma_Y$ 
     - $X,Y$ independent: $Cov(X,Y) = 0$
   - $Cov(X,X) = Var(X)$
   - correlated: linear pattern between two variables
-  - 0 covariance does not imply independence
-- Gaussian Moment Generating Function
+  - 0 covariance does not imply independence unless Gaussian distribution
+    - independence, $f(x,y)=f_X(x)f_Y(y)$
+    - Gaussian distribution being defined by mean and variance only
+      
 - Conditional Bivariate Normal Distribution,
   - random normal variable $Z=\frac{X_z - \mu_z}{\sigma}$
   - marginal probability $f_Z(z)=\frac{1}{\sigma \sqrt{2 \pi}} exp(-\frac{(X_z-\mu_z)^2}{2\sigma^2})$
