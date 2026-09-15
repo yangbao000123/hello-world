@@ -67,8 +67,7 @@
 - $E[min(X,Y)]=E[P(X\geq t)P(Y\geq t)]$
   - $P(X \geq t) = 1-P(X \leq t) = 1- \frac{x-a}{b+a} = \frac{b-x}{b+a}$
   - survival function, $E[P(X \geq t)P(Y \geq t)] = \int_0^{\inf} \frac{b_x-t}{b_x+a_x} \frac{b_y-t}{b_y+a_y} dt$
-
-
+- $E[|X-Y|] = 2E[(X-Y)^+]$
 
 
 
