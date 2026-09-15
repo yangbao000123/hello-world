@@ -1,5 +1,5 @@
 ### Statistical analysis
-- Jensen's inequality: convex f and random variable X: $E[f(x)] \geq f(E[X])$; concave f has the opposite relation
+- Jensen's inequality: convex $f(x)$ and random variable $X: E[f(x)] \geq f(E[X])$; concave $f(x)$ has the opposite relation
 
 - expectations, $\mu=E[X]$
 
