@@ -22,7 +22,8 @@
   - 0 covariance does not imply independence unless Gaussian distribution
     - independence, $f(x,y)=f_X(x)f_Y(y)$
     - Gaussian distribution being defined by mean and variance only
-      
+- correlation
+  - $\rho = \frac{cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$  
 - Conditional Bivariate Normal Distribution,
   - random normal variable $Z=\frac{X_z - \mu_z}{\sigma}$
   - marginal probability $f_Z(z)=\frac{1}{\sigma \sqrt{2 \pi}} exp(-\frac{(X_z-\mu_z)^2}{2\sigma^2})$
