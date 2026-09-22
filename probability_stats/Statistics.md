@@ -29,7 +29,15 @@
   - marginal probability $f_Z(z)=\frac{1}{\sigma \sqrt{2 \pi}} exp(-\frac{(X_z-\mu_z)^2}{2\sigma^2})$
   - joint density $f(y,z)$, condition on $Z=z, f(y,z|Z=z)=\frac{f(y,z)}{f_Z(z)}$ 
   - correlation matrix determinant $(1-\rho^2)$ 
+### Conditional distribution
+- jointly normal variables with mean 0 and covariance matrix $\Sigma$
+  - $X_2|X_1 = x_1 ~ N(\mu_{2|1}, \sigma_{2|1}^2)$
+  - $\mu_{2|1} = \frac{\sigma_{12}}{\sigma_1^2}x_1, \sigma_{2|1} = \sigma_2^2 - \frac{\sigma_{12}^2}{\sigma_1^2}$
+- 95% confidence interval $\mu \pm 1.96\sqrt{\sigma^2}$
 
+### Bayesian priori, posterior probability, posterior predictive probability, likelihood
+- posterior probability: P(Hypothesis|Observed data)
+  
 ### Statistical significance, power, effect size and hypothesis test
 - $H_0$ and $H_1$ to be true or false are mutually exclusive while the test can only reject or fail reject $H_0$, then in support of $H_1$
   - s. significance by design: reject $H_0$ given $H_0$ is true
