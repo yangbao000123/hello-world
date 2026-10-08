@@ -91,7 +91,7 @@
     - cumulative probability
 - Harmonic series
     - $\sum_{k=0}^{\inf}\frac{1}{k!} = e$ ~ Taylor Series
-    - $\sum_{k=1}^{n}\frac{1}{k} = H_n = ln(n) + \gamma + O(\frac{1}{n})$
+    - $\sum_{k=1}^{n}\frac{1}{k} = H_n = ln(n) + \gamma + O(\frac{1}{n})$ - diverge slowly at rate $ln(n)$ since $\gamma > \frac{1}{2}$
     - $H^{(2)}_n \to \frac{\pi^2}{6}$
       
 ### Optimal stopping; 
