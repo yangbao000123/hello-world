@@ -4,6 +4,8 @@
 
 ### recurrence, absorbing state
 - order and sequence
+- state-dependent recursion: linear payout funciton
+  
 ### independence, uniformly random 
 - Identify probability of object-event for linearity of expectation
   
