@@ -9,6 +9,11 @@
 ### independence, uniformly random 
 - Identify probability of object-event for linearity of expectation
   
-### marginal probability and linearity of expectation
+### linearity of expectation
+- independent events
+- regardless of correlation
+- in QR: expected P&L of a portfolio = $\sum$ expected P&L of multiple positions
+
+### marginal probability
 
 ### uniform, binomial and geometric distribution
