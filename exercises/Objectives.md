@@ -8,6 +8,10 @@
 
 ## Exercise
 
+### modulo
+- maximum non-divisible subset size
+- counting and taking turns to reach N
+- 
 ### Uniformly random i.i.d. particles, linearity of expectation
 -  marginal probability; unconditional probability corresponds smaller sample space and layered filter
     - same probability of being chosen regardless of placement, without replacement
